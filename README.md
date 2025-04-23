@@ -1,4 +1,3 @@
-```markdown
 # Fortius Diagnostic Center — Frontend
 
 Namaste! 👋 Welcome to the **Fortius Diagnostic Center** frontend, built with React, Vite, and Tailwind CSS.
