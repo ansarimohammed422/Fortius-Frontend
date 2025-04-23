@@ -1,0 +1,15 @@
+
+@import "tailwindcss";
+/* @plugin '@tailwindcss/typography' */
+@config "../tailwind.config.js";
+body{
+    font-family: 'Nunito';
+    background-color: rgba(243, 244, 246, 1);
+}
+
+
+
+
+
+
+
