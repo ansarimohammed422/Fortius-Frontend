@@ -1,55 +1,140 @@
 import { useState, useEffect, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import Button from "../Components/Button";
-import ScrollToTop from "../Components/ScrollToTop";
 import SearchBar from "../Components/subComponent/searchBar";
 import { TestSelection } from "../Context/Context";
 import axios from "axios";
 import { AuthContext } from "../Context/AuthContext";
+import { OfferPriceContext } from "../Context/Context";
+import { useAppointment } from "../Context/AppointmentContext";
 
 const Appointment = () => {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
+  const location = useLocation();
+  const { offerPrice, setOfferPrice } = useContext(OfferPriceContext);
+  const { appointmentData } = useAppointment();
 
+
+  const [pkgprice, setpkgprice] = useState(location.state?.offerPrice || null)
   const [selectedDate, setSelectedDate] = useState("");
   const [selectedTime, setSelectedTime] = useState("");
-  const [selectedTest, setSelectedTest] = useState([]);
-  const [inputtags, setInputTags] = useState({Name: `${user.first_name} ${user.last_name}` , Email:user.email ,  Phone: "", Address: "" });
+  const [selectedTest, setSelectedTest] = useState(location.state?.selectedTestIds || []);
+  // const [inputtags, setInputTags] = useState({ Name: `${user.first_name} ${user.last_name}`, Email: user.email, Phone: "", Address: "" });
+  const [inputtags, setInputTags] = useState({
+    Name: user?.first_name && user?.last_name
+      ? `${user.first_name} ${user.last_name}`
+      : appointmentData?.name || "",
+    Email: user?.email || appointmentData?.email || "",
+    Phone: appointmentData?.number || "",
+    Address: "",
+  });
   const [tests, setTests] = useState([]);
   const [homeSample, setHomeSample] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
   const [alertType, setAlertType] = useState("");
   const [PhoneError, setPhoneError] = useState(false)
-  const [categories, setCategories] = useState([])
+
 
   useEffect(() => {
+    const newOffer = location.state?.offerPrice || null;
+    setOfferPrice(newOffer);
+
+    if (location.state?.selectedTestIds || location.state?.offerPrice) {
+      navigate(location.pathname, { replace: true, state: {} });
+    }
+
+    // ⏱ Load cached tests first (fast UI)
+    const cachedTests = localStorage.getItem("cachedTests");
+    if (cachedTests) {
+      setTests(JSON.parse(cachedTests));
+    }
+
+    // 🌐 Fetch fresh tests from API
+    // const fetchTests = async () => {
+    //   try {
+    //     const token = localStorage.getItem("accessToken");
+    //     const { data } = await axios.get("http://127.0.0.1:8000/api/tests/", {
+    //       headers: { Authorization: `Bearer ${token}` },
+    //     });
+    //     setTests(data); // update state
+    //     localStorage.setItem("cachedTests", JSON.stringify(data)); // update cache
+    //   } catch (error) {
+    //     console.error("Error fetching tests:", error);
+    //   }
+    // };
     const fetchTests = async () => {
       try {
         const token = localStorage.getItem("accessToken");
-        const testsResponse = await axios.get("http://127.0.0.1:8000/api/tests/",{
-          headers: { Authorization: `Bearer ${token}` },
-      });
-        setTests(testsResponse.data);
-        console.log(tests)
+
+        const headers = token
+          ? { Authorization: `Bearer ${token}` }
+          : {}; // No auth for guests
+
+        const { data } = await axios.get("http://127.0.0.1:8000/api/tests/", {
+          headers,
+        });
+
+        setTests(data); // update state
+        localStorage.setItem("cachedTests", JSON.stringify(data)); // update cache
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error("Error fetching tests:", error);
       }
     };
-    fetchTests();
-    const fetchcategories = async () => {
-      try {
-        const token = localStorage.getItem("accessToken");
-        const categoryresponse = await axios.get("http://127.0.0.1:8000/api/category/",{
-          headers: { Authorization: `Bearer ${token}` },
-      });
-        setCategories(categoryresponse.data);
-        console.log(categories)
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-    fetchcategories()
+
+
+    fetchTests(); // Always fetch fresh in background
   }, []);
+
+  // const handleSubmit = async () => {
+  //   if (inputtags.Phone.length < 10) {
+  //     setPhoneError(true);
+  //     return;
+  //   }
+
+  //   const appointmentData = {
+  //     date: selectedDate,
+  //     time: selectedTime,
+  //     user_name: inputtags.Name,
+  //     user_email: inputtags.Email,
+  //     user_phone: inputtags.Phone,
+  //     tests: selectedTest,             // already seeded or modified
+  //     home_sample: homeSample,
+  //     address: homeSample ? inputtags.Address : "",
+  //   };
+
+  //   try {
+  //     const token = localStorage.getItem("accessToken");
+  //     const response = await axios.post(
+  //       "http://127.0.0.1:8000/api/appointments/",
+  //       appointmentData,
+  //       { headers: { Authorization: `Bearer ${token}` } }
+  //     );
+
+  //     if (response.data.id) {
+  //       const appointmentId = response.data.id;
+  //       setAlertMessage("Appointment booked successfully!");
+  //       setAlertType("success");
+  //       setSelectedTest([]);
+
+  //       setTimeout(() => {
+  //         setAlertMessage("");
+  //         setAlertType("");
+  //         navigate(`/billing/${appointmentId}`, { state: { validAccess: true }});
+  //       }, 2000);
+  //     } else {
+  //       throw new Error("No appointment ID in response");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error booking appointment:", error);
+  //     setAlertMessage("Failed to book appointment. Please try again.");
+  //     setAlertType("error");
+  //     setTimeout(() => {
+  //       setAlertMessage("");
+  //       setAlertType("");
+  //     }, 3000);
+  //   }
+  // };
 
   const handleSubmit = async () => {
     if (inputtags.Phone.length < 10) {
@@ -57,7 +142,6 @@ const Appointment = () => {
       return;
     }
 
-    // Prepare appointment data
     const appointmentData = {
       date: selectedDate,
       time: selectedTime,
@@ -65,47 +149,41 @@ const Appointment = () => {
       user_email: inputtags.Email,
       user_phone: inputtags.Phone,
       tests: selectedTest,
-      home_sample: homeSample,  // New field
-      address: homeSample ? inputtags.Address : "", // Only send address if checked
+      home_sample: homeSample,
+      address: homeSample ? inputtags.Address : "",
     };
 
     try {
       const token = localStorage.getItem("accessToken");
-      const response = await axios.post("http://127.0.0.1:8000/api/appointments/", appointmentData,
-        {
-          headers: { Authorization: `Bearer ${token}` },
+      const headers = {};
+      if (token) {
+        headers["Authorization"] = `Bearer ${token}`;
       }
+
+      const response = await axios.post(
+        "http://127.0.0.1:8000/api/appointments/",
+        appointmentData,
+        { headers }
       );
 
       if (response.data.id) {
         const appointmentId = response.data.id;
-        console.log("Appointment created successfully. Redirecting to billing:", appointmentId);
-
         setAlertMessage("Appointment booked successfully!");
         setAlertType("success");
+        setSelectedTest([]);
 
         setTimeout(() => {
           setAlertMessage("");
           setAlertType("");
           navigate(`/billing/${appointmentId}`, { state: { validAccess: true } });
         }, 2000);
-
       } else {
-        console.error("Error: Appointment ID not received.");
-        setAlertMessage("Error: Appointment ID not found.");
-        setAlertType("error");
-
-        setTimeout(() => {
-          setAlertMessage("");
-          setAlertType("");
-        }, 3000);
+        throw new Error("No appointment ID in response");
       }
     } catch (error) {
-      console.error("Error saving appointment:", error.response?.data || error.message);
-
+      console.error("Error booking appointment:", error);
       setAlertMessage("Failed to book appointment. Please try again.");
       setAlertType("error");
-
       setTimeout(() => {
         setAlertMessage("");
         setAlertType("");
@@ -113,31 +191,37 @@ const Appointment = () => {
     }
   };
 
+
   return (
-    <div className="w-screen p-20 ">
+    <div className="w-screen p-40 ">
       <TestSelection.Provider value={{ selectedTest, setSelectedTest }}>
-        <div className="relative mx-auto mt-20 mb-20 max-w-screen-lg overflow-hidden rounded-xl bg-[url('./assets/New_teal.jpg')] bg-cover bg-no-repeat text-blue-950 text-center shadow-xl shadow-gray-300">
-          {alertMessage && (
-            <div
-              className={`fixed top-5 z-10 mt-40 left-1/2 transform -translate-x-1/2 w-3/4 max-w-lg px-4 py-3 rounded-lg text-white text-center ${alertType === "success" ? "bg-green-500" : "bg-red-500"
-                }`}
-            >
-              {alertMessage}
+        <div className="max-w-7xl flex justify-center items-center mx-auto">
+        <div className='w-full [background:linear-gradient(45deg,#F0FDFA,theme(colors.teal.50)_50%,#F0FDFA)_padding-box,conic-gradient(from_var(--border-angle),theme(colors.teal.400)_80%,_theme(colors.teal.500)_86%,_theme(colors.teal.600)_90%,_theme(colors.teal.700)_94%,_theme(colors.blue.950))_border-box] border-4 border-transparent animate-border rounded-full  overflow-hidden'>
+
+          <div className=" overflow-hidden rounded-full bg-[url('./assets/New_teal.jpg')] bg-cover bg-no-repeat text-blue-950 text-center shadow-xl shadow-gray-300">
+            {alertMessage && (
+              <div
+                className={`fixed top-5 z-10 mt-40 left-1/2 transform -translate-x-1/2 w-3/4 max-w-lg px-4 py-3 rounded-lg text-white text-center ${alertType === "success" ? "bg-green-500" : "bg-red-500"
+                  }`}
+              >
+                {alertMessage}
+              </div>
+            )}
+            <div className="p-10 bg-teal-400/30 filter backdrop-blur-lg py-20 w-full h-full">
+              <h1 className="mt-2 px-8 text-3xl font-bold md:text-8xl text-blue-950">Book an Appointment</h1>
+              <p className="mt-6 text-lg text-blue-950">
+                Get an appointment at{" "}
+                <span className="ml-1 font-extrabold inline text-blue-950">Fortius</span>
+              </p>
             </div>
-          )}
-          <div className="relative bg-teal-400/30 filter backdrop-blur-lg py-20 w-full h-full">
-            <h1 className="mt-2 px-8 text-3xl font-bold md:text-7xl text-blue-950">Book an Appointment</h1>
-            <p className="mt-6 text-lg text-blue-950">
-              Get an appointment at{" "}
-              <span className="ml-1 font-extrabold inline text-blue-950">Fortius</span>
-            </p>
           </div>
+        </div>
         </div>
 
         <div className="mx-auto grid max-w-screen-lg px-6 pb-20">
           <div className="my-10 flex flex-col gap-6">
             <p className="text-2xl font-extrabold text-blue-950">Search for a Tests:</p>
-            <SearchBar alltests={tests} allCategories={categories} />
+            <SearchBar alltests={tests} offerPrice={pkgprice} />
           </div>
 
           <div className="mb-10">
@@ -149,7 +233,7 @@ const Appointment = () => {
                   type="date"
                   value={selectedDate}
                   onChange={(e) => setSelectedDate(e.target.value)}
-                  className="block w-full rounded-lg px-4 py-3 text-xl border border-teal-400 bg-white text-blue-950 focus:ring focus:shadow-teal-400 focus:shadow-md focus:ring-teal-400 focus:outline-none transition-all ease-linear duration-300"
+                  className="block w-full rounded-full px-4 py-3 text-xl border border-teal-400 bg-white text-blue-950 focus:ring focus:shadow-teal-400 focus:shadow-md focus:ring-teal-400 focus:outline-none transition-all ease-linear duration-300"
                   required
                 />
               </div>
@@ -160,8 +244,8 @@ const Appointment = () => {
                   value={inputtags.Name}
                   onChange={(e) => setInputTags({ ...inputtags, Name: e.target.value })}
 
-                  className="px-4 py-2 w-full bg-white rounded-lg border border-teal-400 focus:ring focus:shadow-teal-400 focus:shadow-md focus:ring-teal-400 focus:outline-none transition-all ease-linear duration-300"
-                  
+                  className="px-4 py-2 w-full bg-white rounded-full border border-teal-400 focus:ring focus:shadow-teal-400 focus:shadow-md focus:ring-teal-400 focus:outline-none transition-all ease-linear duration-300"
+                  placeholder="Enter Name"
                 />
               </div>
               <div className="relative flex flex-col gap-4 text-xl text-blue-950">
@@ -169,7 +253,8 @@ const Appointment = () => {
                 <input
                   type="email"
                   value={inputtags.Email}
-                  className="px-4 py-2 w-full bg-white rounded-lg border border-teal-400 focus:ring focus:shadow-teal-400 focus:shadow-md focus:ring-teal-400 focus:outline-none transition-all ease-linear duration-300"
+                  className="px-4 py-2 w-full bg-white rounded-full border border-teal-400 focus:ring focus:shadow-teal-400 focus:shadow-md focus:ring-teal-400 focus:outline-none transition-all ease-linear duration-300"
+                  placeholder="Enter Email"
                   onChange={(e) => setInputTags({ ...inputtags, Email: e.target.value })}
 
                 />
@@ -181,7 +266,7 @@ const Appointment = () => {
                   name="Phone"
                   value={inputtags.Phone}
                   onChange={(e) => setInputTags({ ...inputtags, Phone: e.target.value })}
-                  className="px-4 py-2 w-full bg-white rounded-lg border border-teal-400 focus:ring focus:shadow-teal-400 focus:shadow-md focus:ring-teal-400 focus:outline-none transition-all ease-linear duration-300"
+                  className="px-4 py-2 w-full bg-white rounded-full border border-teal-400 focus:ring focus:shadow-teal-400 focus:shadow-md focus:ring-teal-400 focus:outline-none transition-all ease-linear duration-300"
                   placeholder="Enter Your Number"
                   required
                 />
@@ -195,7 +280,7 @@ const Appointment = () => {
                   max="21:00"
                   value={selectedTime}
                   onChange={(e) => setSelectedTime(e.target.value)}
-                  className="px-4 py-2 w-full bg-white rounded-lg border border-teal-400 focus:ring focus:shadow-teal-400 focus:shadow-md focus:ring-teal-400 focus:outline-none transition-all ease-linear duration-300"
+                  className="px-4 py-2 w-full bg-white rounded-full border border-teal-400 focus:ring focus:shadow-teal-400 focus:shadow-md focus:ring-teal-400 focus:outline-none transition-all ease-linear duration-300"
                   required
                 />
               </div>
@@ -215,7 +300,7 @@ const Appointment = () => {
                 <div className="absolute top-1 left-1 w-4 h-4 bg-teal-400 rounded-full shadow-md peer-checked:translate-x-6 peer-checked:bg-blue-950 transition-all ease-linear duration-150"></div>
               </div>
               <h1 className="text-2xl my-5 font-extrabold text-blue-950">
-              Request Home Sample Collection
+                Request Home Sample Collection
               </h1>
             </label>
             {homeSample && (

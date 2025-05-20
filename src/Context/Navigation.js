@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext } from "react";
 
 // Create context with default values for sidebar and scroll states
 export const NavigationContext = createContext({

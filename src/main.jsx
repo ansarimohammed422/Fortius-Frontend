@@ -15,16 +15,21 @@ import "./index.css";
 import App from "./App.jsx";
 import { BrowserRouter, } from "react-router-dom";
 import { AuthProvider } from "./Context/AuthContext.jsx";
+import { OfferPriceProvider } from "./Context/OfferPriceProvider.jsx";
+import { AppointmentProvider } from "./Context/AppointmentContext.jsx";
 createRoot(document.getElementById("root")).render(
 
 
   <StrictMode>
     <BrowserRouter>
+    <AppointmentProvider>
+    <OfferPriceProvider>
       <AuthProvider> {/* ✅ Wrap the entire app inside AuthProvider */}
 
         <App />
       </AuthProvider>
-
+      </OfferPriceProvider>
+      </AppointmentProvider>
     </BrowserRouter>
   </StrictMode>
 );

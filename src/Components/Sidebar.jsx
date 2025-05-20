@@ -157,7 +157,6 @@ const Sidebar = () => {
       </div>
 
       {/* Links */}
-      {user &&
         <div>
           <MyLinks
             path="/Appointment"
@@ -170,7 +169,20 @@ const Sidebar = () => {
             LFunc={handleLinkClick}
           />
         </div>
-      }
+        
+      {user &&
+      <div>
+        <MyLinks
+          path="/packages"
+          customClass={`flex items-center gap-3 w-full px-4 py-2 text-left text-lg  sm:text-3xl font-black hover:shadow-blue-950 hover:shadow-inner rounded-lg ${isScrolled
+              ? "!bg-white text-teal-400 shadow-lg border border-teal-400 hover:!bg-blue-950 hover:!text-teal-400"
+              : "bg-transparent !text-blue-950"
+            } transition-all ease-linear duration-300`}
+          LName="Test Packages"
+          LIcon={<IoCalendar />}
+          LFunc={handleLinkClick}
+        />
+      </div>}
       <div>
         <MyLinks
           path="/blogs"

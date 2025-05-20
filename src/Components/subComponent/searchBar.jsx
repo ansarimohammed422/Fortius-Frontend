@@ -2,16 +2,17 @@
 import React, { useState, useContext } from "react";
 import Button from "../Button";
 import { TestSelection } from "../../Context/Context";
+import { OfferPriceContext } from "../../Context/Context";
+
 
 const SearchBar = (props) => {
+  const { offerPrice } = useContext(OfferPriceContext);
   const [query, setQuery] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [showAll, setShowAll] = useState(false);
   const values = useContext(TestSelection);
   const [catetests, setcatetests] = useState([])
   let total_price = 0;
-
-
 
   const handleInputChange = (e) => {
     const value = e.target.value;
@@ -40,6 +41,7 @@ const SearchBar = (props) => {
     setSuggestions(
        props.alltests
     );
+    console.log(props.offerPrice)
   };
 
   const handleBlur = () => {
@@ -73,7 +75,7 @@ const SearchBar = (props) => {
         onFocus={handleFocus}
         onBlur={handleBlur}
         placeholder="Search tests..."
-        className="w-full p-4 border border-teal-400 rounded-xl text-xl focus:outline-none 
+        className="w-full p-4 border border-teal-400 rounded-full text-xl focus:outline-none 
                    focus:ring-2 focus:ring-teal-400 focus:shadow-lg focus:bg-white focus:shadow-teal-400 
                    transition-all ease-linear duration-500"
       />
@@ -97,6 +99,7 @@ const SearchBar = (props) => {
             <tbody>
               {suggestions.map((test) => (
                 
+                
 
                 
                 <tr
@@ -107,9 +110,10 @@ const SearchBar = (props) => {
                   <td className="p-3 font-semibold text-blue-950 ">{test.id}</td>
                   <td className="p-3 font-semibold text-blue-950">{test.name}</td>
                   <td className="p-3 font-semibold text-blue-950">Rs. {test.price}</td>
+                  { test.membership_price &&
                   <td className="p-3 font-bold text-teal-400">
                   {test.membership_price == test.price ? null : ("Rs." +test.membership_price)}
-                  </td>
+                  </td>}
                   <td className="p-3 font-bold text-teal-400">
                   {test.general_offer_price == test.price ? null : ("Rs." +test.general_offer_price)}
                   </td>
@@ -150,10 +154,23 @@ const SearchBar = (props) => {
               );
             })}
           </div>
-          <div className="mt-10 flex items-center">
-            <h1 className="text-xl">
-              <span className="text-blue-950 font-bold">Total Price:</span>{" "}
-              <span className="font-bold drop-shadow-2xl">Rs. {total_price}</span>
+          <div className="mt-10 flex justify-between items-center">
+            <h1 className="text-xl flex justify-between w-full">
+              <div>
+              <span className="text-blue-950 font-bold">Total Price:</span>
+              <span className="font-bold drop-shadow-2xl"> Rs.{total_price}
+
+              </span>
+
+              </div>
+              <div>
+              <span className="text-blue-950 font-bold">Offer Price:</span>
+              <span className="font-bold drop-shadow-2xl"> Rs.{offerPrice !== undefined && offerPrice !== null ? offerPrice : null}
+
+              </span>
+              
+              </div>
+
             </h1>
           </div>
         </div>

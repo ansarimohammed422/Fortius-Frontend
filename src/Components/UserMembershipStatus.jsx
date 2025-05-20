@@ -89,6 +89,7 @@
 import { useEffect } from "react";
 import axios from "axios";
 import { FaCheckCircle, FaTimesCircle, FaCrown } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const UserMembershipStatus = (props) => {
   const token = localStorage.getItem("accessToken");
@@ -196,9 +197,9 @@ const UserMembershipStatus = (props) => {
                 Unsubscribe
               </button>
 
-              <button className="bg-teal-500 text-white font-medium px-8 py-3 rounded-lg hover:bg-teal-600 transition-all duration-300">
-                Upgrade Membership
-              </button>
+              <Link to="/membership" className="bg-teal-500 text-white font-medium px-8 py-3 rounded-lg hover:bg-teal-600 transition-all duration-300">
+                Know More
+              </Link>
             </>
           ) : (
             <div className="text-center">

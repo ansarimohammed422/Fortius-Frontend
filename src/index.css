@@ -1,15 +1,34 @@
 
 @import "tailwindcss";
 /* @plugin '@tailwindcss/typography' */
-@config "../tailwind.config.js";
+@config "../tailwindcss.config.js";
 body{
     font-family: 'Nunito';
     background-color: rgba(243, 244, 246, 1);
 }
 
+.perspective {
+    perspective: 1000px;
+  }
+  
+  .transform-style-preserve-3d {
+    transform-style: preserve-3d;
+  }
+  
+  .backface-hidden {
+    backface-visibility: hidden;
+  }
+  
+  @property --border-angle {
+    inherits: false;
+    initial-value: 0deg;
+    syntax: '<angle>';
+}
 
 
-
-
-
-
+.glassmorphic-card {
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}

@@ -33,6 +33,10 @@ import ProtectedRoute from "./Components/ProtectedRoute";
 import BillingPage from "./Pages/BillingPage";
 import SendResetEmail from "./accounts/SendResetEmail";
 import ResetPassword from "./accounts/ResetPassword";
+import MembershipPage from "./Pages/Membership";
+import PackagesPage from "./Pages/Packages";
+import { AppointmentProvider } from "./Context/AppointmentContext";
+import MainHome from "./Main/MainHome";
 
 function App() {
   const location = useLocation();
@@ -70,6 +74,8 @@ function App() {
         >
           <Routes location={location} key={location.pathname}>
             <Route path="/" element={<Home />} />
+            {/* <Route path="/" element={<MainHome />} /> */}
+            <Route path="/diagnostic" element={<Home />} />
             <Route path="/About" element={<About />} />
             {/* <Route path="/Appointment" element={<Appointment />} /> */}
             <Route path="/Contact" element={<Contact />} />
@@ -93,27 +99,21 @@ function App() {
                 </ProtectedRoute>
               }
             />
-            <Route path="/Appointment" element={
-              <ProtectedRoute>
-                <Appointment />
-              </ProtectedRoute>
-            } />
-            <Route path="/billing/:appointmentId" element={
-              <ProtectedRoute>
-                <BillingPage />
-              </ProtectedRoute>
-            } />
+            <Route path="/Appointment" element={<Appointment />} />
+
+            <Route path="/billing/:appointmentId" element={<BillingPage />} />
 
             <Route path="/forgot-password" element={<SendResetEmail />} />
-            <Route path="/reset-password/:uidb64/:token" element={<ResetPassword />} />
-
-
-
+            <Route
+              path="/reset-password/:uidb64/:token"
+              element={<ResetPassword />}
+            />
+            <Route path="/membership" element={<MembershipPage />} />
+            <Route path="/packages" element={<PackagesPage />} />
           </Routes>
         </motion.div>
       </AnimatePresence>
       <Footer />
-
     </>
   );
 }

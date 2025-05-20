@@ -1,16 +1,19 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useContext } from "react";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
-
+import { OfferPriceContext } from "../Context/Context";
 const BillingPage = () => {
+  const { offerPrice } = useContext(OfferPriceContext);
   const { appointmentId } = useParams();
   const location = useLocation(); // Get navigation state
   const navigate = useNavigate();
   const [bill, setBill] = useState(null);
   const [loading, setLoading] = useState(true);
   const billRef = useRef(); // Reference to bill section
+  let offer_price;
 
   useEffect(() => {
+    console.log(offerPrice)
     if (!location.state || !location.state.validAccess) {
       navigate("/UserDashboard"); // Redirect unauthorized access to dashboard
       return;
@@ -21,7 +24,10 @@ const BillingPage = () => {
         setBill(response.data);
         setLoading(false);
       })
-      .catch((error) => console.error("Error fetching bill:", error));
+      .catch((error) => {
+        console.error("Error fetching bill:", error)
+        setLoading(false);
+      });
   }, [appointmentId, location.state, navigate]);
 
   // ✅ Function to print only the bill (excluding navbar/footer)
@@ -32,12 +38,13 @@ const BillingPage = () => {
     document.body.innerHTML = billContents; // Set body to only bill content
     window.print();
     document.body.innerHTML = originalContents; // Restore full page after printing
-    window.location.reload(); // Reload to restore event listeners
+    // window.location.reload(); // Reload to restore event listeners
   };
 
   return (
     <div className="flex justify-center items-center pt-40 pb-10 min-h-screen bg--100">
       {loading ? (
+
         <p className="text-blue-950 text-xl">Loading bill details...</p>
       ) : (
         <div ref={billRef} className="max-w-2xl w-full bg-teal-50 p-8 rounded-lg shadow-lg border border-gray-300">
@@ -48,6 +55,7 @@ const BillingPage = () => {
             <p className="text-gray-600">Phone: +91 9076115232</p>
             <hr className="my-4 border-gray-400" />
             <h2 className="text-xl font-bold text-gray-800">Invoice</h2>
+            {offerPrice && <h1 className="text-xl font-bold text-gray-800">Packaged Tests</h1>}
           </div>
 
           {/* Patient Details */}
@@ -81,9 +89,15 @@ const BillingPage = () => {
           </div>
 
           {/* Payment Summary */}
-          <div className="flex justify-between items-center mt-4">
-            <h3 className="text-lg font-semibold text-blue-950">Total Amount:</h3>
-            <p className="text-xl font-bold text-gray-800">₹{bill.total_price}</p>
+          <div>
+            <div className="flex justify-between items-center mt-4">
+              <h3 className="text-lg font-semibold text-blue-950">Total Amount:</h3>
+              <p className="text-xl font-bold text-gray-800">₹Rs {bill.total_price}</p>
+            </div>
+            <div className="flex justify-between items-center mt-4">
+              <h3 className="text-lg font-semibold text-blue-950">Offer Amount:</h3>
+              <p className="text-xl font-bold text-gray-800">₹Rs.{offerPrice == null ? null : offerPrice}</p>
+            </div>
           </div>
 
           {/* Payment Status */}

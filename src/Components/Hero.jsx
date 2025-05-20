@@ -227,16 +227,14 @@ const Hero = () => {
                   </h3>
 
                   <div className="flex items-center justify-between px-3 py-2 shadow-2xl  bg-blue-950 text-teal-400 ">
-                    <span className="font-bold text-lg text-customBlue text-teal-400">
+                    <span className="font-bold text-lg  text-teal-400">
                       Appointment
                     </span>
-                    {/* <button className="px-2 py-1 text-sm font-bold text-blue-950 uppercase transition-all duration-500 transform bg-teal-400 rounded hover:bg-blue-950 hover:text-teal-400 border border-teal-400 hover:border hover:border-teal-400  focus:outline-none  ">
-                      More Tests
-                    </button> */}
+
                     <MyLinks
                       path="/Appointment"
                       LName="Book Now"
-                      customClass="bg-teal-400 !text-blue-950 text-sm p-2 rounded-md border border-blue-950  hover:!text-teal-400 hover:bg-blue-950 hover:border hover:border-teal-400"
+                      customClass="bg-teal-400 !text-blue-950 !text-base p-2 rounded-md border border-blue-950   transform hover:scale-105 hover:border hover:border-teal-400"
                     />
                   </div>
                 </div>
