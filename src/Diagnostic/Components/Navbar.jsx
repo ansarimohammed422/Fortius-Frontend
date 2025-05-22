@@ -1,79 +1,95 @@
-import React, { useContext, useEffect, useRef } from "react";
-import { NavigationContext } from "../Context/Navigation";
-import MyImage from "../assets/WithLogo.svg";
-import { SidebarDropdown } from "./subComponent/DropDown";
+import React from "react";
+import { useState, useEffect, useContext } from "react";
 import { MyLinks } from "./Button";
-import { IoCalendar } from "react-icons/io5";
-import { ImBlogger } from "react-icons/im";
-import { TbTagsFilled } from "react-icons/tb";
-import { FaUserTie } from "react-icons/fa6";
-import { AuthContext } from "../Context/AuthContext";
-import { Link } from "react-router-dom";
-
-import {
-  RiInstagramFill,
-  RiLinkedinBoxFill,
-  RiTwitterXFill,
-  RiFacebookBoxFill,
-} from "react-icons/ri";
+import { NavigationContext } from "../../Context/Navigation";
 import { MdPermContactCalendar, MdHome } from "react-icons/md";
 import { BsFillPatchExclamationFill } from "react-icons/bs";
 import { BiFoodMenu } from "react-icons/bi";
+import ProfileDropdown from "./subComponent/ProfileDropDown";
+import { Link } from "react-router-dom";
 
-const Sidebar = () => {
-  const { user } = useContext(AuthContext)
+const Navbar = (props) => {
+  // const [isScrolled, setIsScrolled] = useState(false);
+  // const [isHidden, setIsHidden] = useState(false);
+  // const [lastScrollY, setLastScrollY] = useState(0);
+
   const {
     sidebarOpen,
-    setSidebarOpen, // Assuming setSidebarOpen is a function from context
+    setSidebarOpen,
     isScrolled,
+    setIsScrolled,
+    isHidden,
+    setIsHidden,
+    lastScrollY,
+    setLastScrollY,
   } = useContext(NavigationContext);
 
-  const sidebarRef = useRef(null); // Reference to the sidebar
-
-  // Close sidebar when clicked outside
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
-        setSidebarOpen(false); // Close sidebar
-      }
-    };
-
-    // Add event listener
-    document.addEventListener("mousedown", handleClickOutside);
-
-    // Cleanup on component unmount
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [setSidebarOpen]);
-
-  // Close sidebar when a link is clicked
-  const handleLinkClick = () => {
-    setSidebarOpen(false); // Close sidebar on link click
+  const handleToggleSidebar = () => {
+    setSidebarOpen((prev) => !prev); // Toggle the sidebar state
   };
 
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 0);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+
+      if (currentScrollY > lastScrollY && currentScrollY > 50) {
+        // Hide navbar on scroll down
+        setIsHidden(true);
+      } else {
+        // Show navbar on scroll up
+        setIsHidden(false);
+      }
+
+      setLastScrollY(currentScrollY); // Update last scroll position
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll); // Cleanup listener
+    };
+  }, [lastScrollY]);
+
   return (
-    <aside
-      ref={sidebarRef} // Attach ref to sidebar
-      className={`fixed left-0 z-10 sm:w-80 w-60 h-screen px-4 py-8 flex flex-col gap-3
-        overflow-y-auto transform transition-transform ease-linear duration-200
-        ${sidebarOpen ? "translate-x-0" : "-translate-x-full"} ${isScrolled
-          ? "bg-gray-50 shadow-lg"
-          : "bg-teal-400/30 filter backdrop-blur-md"
-        }`}
+    <nav
+      className={`flex justify-between w-full sm:w-screen fixed top-0 z-10 items-center mb-10 rounded-b-xl ${
+        isScrolled ? " bg-gray-50 shadow-lg" : "bg-teal-400/30 backdrop-blur-md"
+      } ${
+        isHidden ? "-translate-y-full" : "translate-y-0"
+      } transition-all ease-linear duration-200
+    ${props.isOpen ? "sm:pl-80 pl-60" : ""}
+    `}
     >
-      {/* Logo Section */}
-      <div className="flex justify-start items-center mb-5">
+      <div className="flex justify-center items-center   m-3 text-5xl text-blue-900">
+        <button
+          onClick={handleToggleSidebar}
+          className={` text-blue-950 hover:shadow-blue-950 hover:shadow-inner p-2 mr-3  border-blue-950 rounded-xl transition-all ease-linear duration-300 ${
+            sidebarOpen ? "bg-blue-950 text-teal-400" : ""
+          }`}
+        >
+          <BiFoodMenu size={36} />
+        </button>
+
+        {/* <img src={MyImage} alt="Logo" className={`w-auto h-14 ${sidebarOpen ? "hidden" : ""}`}></img> */}
         <Link to={"/"}>
           <svg
-            className="w-auto sm:h-14 h-10"
+            className={`w-auto h-14 ${sidebarOpen ? "hidden" : ""} `}
             width="45.828159mm"
             height="11.071985mm"
             viewBox="0 0 45.828159 11.071985"
             id="SVGRoot"
             version="1.1"
             xmlns="http://www.w3.org/2000/svg"
-            // xmlns:svg="http://www.w3.org/2000/svg"
+            //  xmlns:svg="http://www.w3.org/2000/svg"
           >
             <defs id="defs1" />
             <g id="layer1" transform="translate(-13.738348,-19.961679)">
@@ -128,9 +144,7 @@ const Sidebar = () => {
                   style={{
                     fill: "#2DD4BF",
                     fillRule: "evenodd",
-                    strokeWidth: "0.022777",
-                    stroke: "#092c5c",
-                    strokeOpacity: "1",
+                    strokeWidth: "0.352777",
                   }}
                   id="path24"
                 />
@@ -139,171 +153,42 @@ const Sidebar = () => {
           </svg>
         </Link>
       </div>
-
-      {/* Dropdown Section */}
-      <div>
+      <div className="mx-10  hidden gap-4 items-center sm:flex">
         <MyLinks
-          path="/"
+          path="/diagnostic"
           LName="Home"
-          LIcon={<MdHome />}
-          customClass={`flex sm:hidden items-center gap-3 sm:text-3xl text-lg w-full px-4 py-2 ${isScrolled
-              ? " rounded-lg !bg-white text-teal-400 shadow-lg border border-teal-400 hover:!bg-blue-950 hover:!text-teal-400"
-              : "!text-blue-950   hover:shadow-blue-950 hover:shadow-inner px-4 py-2 rounded-lg "
-            }  `}
-        />
-      </div>
-      <div>
-        <SidebarDropdown dropFunc={handleLinkClick} />
-      </div>
-
-      {/* Links */}
-        <div>
-          <MyLinks
-            path="/Appointment"
-            customClass={`flex items-center gap-3 w-full px-4 py-2 text-left text-lg  sm:text-3xl font-black hover:shadow-blue-950 hover:shadow-inner rounded-lg ${isScrolled
-                ? "!bg-white text-teal-400 shadow-lg border border-teal-400 hover:!bg-blue-950 hover:!text-teal-400"
-                : "bg-transparent !text-blue-950"
-              } transition-all ease-linear duration-300`}
-            LName="Appointment"
-            LIcon={<IoCalendar />}
-            LFunc={handleLinkClick}
-          />
-        </div>
-        
-      {user &&
-      <div>
-        <MyLinks
-          path="/packages"
-          customClass={`flex items-center gap-3 w-full px-4 py-2 text-left text-lg  sm:text-3xl font-black hover:shadow-blue-950 hover:shadow-inner rounded-lg ${isScrolled
-              ? "!bg-white text-teal-400 shadow-lg border border-teal-400 hover:!bg-blue-950 hover:!text-teal-400"
-              : "bg-transparent !text-blue-950"
-            } transition-all ease-linear duration-300`}
-          LName="Test Packages"
-          LIcon={<IoCalendar />}
-          LFunc={handleLinkClick}
-        />
-      </div>}
-      <div>
-        <MyLinks
-          path="/blogs"
-          customClass={`flex items-center gap-3 w-full px-4 py-2 text-left text-lg  sm:text-3xl font-black hover:shadow-blue-950 hover:shadow-inner rounded-lg ${isScrolled
-              ? "!bg-white border border-teal-400 shadow-lg text-teal-400 hover:!bg-blue-950 hover:!text-teal-400"
-              : "bg-transparent !text-blue-950"
-            } transition-all ease-linear duration-300`}
-          LName="Blogs"
-          LIcon={<ImBlogger />}
-          LFunc={handleLinkClick}
-        />
-      </div>
-      <div>
-        <MyLinks
-          path="/offers"
-          customClass={`flex items-center gap-3 w-full px-4 py-2 text-left text-lg  sm:text-3xl font-black hover:shadow-blue-950 hover:shadow-inner rounded-lg ${isScrolled
-              ? "!bg-white text-teal-400 shadow-lg border border-teal-400 hover:!bg-blue-950 hover:!text-teal-400"
-              : "bg-transparent !text-blue-950"
-            } transition-all ease-linear duration-300`}
-          LName="Offers"
-          LIcon={<TbTagsFilled />}
-          LFunc={handleLinkClick}
-        />
-      </div>
-      <div>
-        <MyLinks
-          path="/Career"
-          customClass={`flex items-center gap-3 w-full px-4 py-2 text-left text-lg  sm:text-3xl font-black hover:shadow-blue-950 hover:shadow-inner rounded-lg ${isScrolled
-              ? "!bg-white text-teal-400 shadow-lg border border-teal-400 hover:!bg-blue-950 hover:!text-teal-400"
-              : "bg-transparent !text-blue-950"
-            } transition-all ease-linear duration-300`}
-          LName="Career"
-          LIcon={<FaUserTie />}
-          LFunc={handleLinkClick}
+          LIcon={<MdHome size={32} />}
+          customClass={`flex items-center gap-1 ${
+            isScrolled
+              ? "px-4 py-2 rounded-lg"
+              : "!text-blue-950  hover:shadow-blue-950 hover:shadow-inner px-4 py-2 rounded-lg "
+          }  `}
         />
 
-
-      </div>
-      <div>
         <MyLinks
-          path="/Contact"
+          path="/diagnostic/Contact"
           LName="Contact Us"
-          LIcon={<MdPermContactCalendar />}
-          customClass={`flex sm:hidden w-full px-4 py-2 items-center gap-3 text-lg rounded-lg ${isScrolled ? "!bg-white text-teal-400 shadow-lg border border-teal-400 hover:!bg-blue-950 hover:!text-teal-400 " : "!text-blue-950   hover:shadow-blue-950 hover:shadow-inner px-4 py-2 rounded-lg"
-            }  `}
+          LIcon={<MdPermContactCalendar size={32} />}
+          customClass={`flex items-cenetr gap-1 ${
+            isScrolled
+              ? "px-4 py-2 rounded-lg"
+              : "!text-blue-950  hover:shadow-blue-950 hover:shadow-inner px-4 py-2 rounded-lg"
+          }  `}
         />
-      </div>
-      <div>
         <MyLinks
-          path="/About"
+          path="/diagnostic/About"
           LName="About Us"
-          LIcon={<BsFillPatchExclamationFill size={16} />}
-          customClass={`flex sm:hidden text-lg w-full px-4 py-2 items-center gap-3 ${isScrolled ? "rounded-lg !bg-white text-teal-400 shadow-lg border border-teal-400 hover:!bg-blue-950 hover:!text-teal-400" : "!text-blue-950  hover:shadow-blue-950 hover:shadow-inner px-4 py-2 rounded-lg"
-            }  `}
+          LIcon={<BsFillPatchExclamationFill size={28} />}
+          customClass={`flex items-center gap-1 ${
+            isScrolled
+              ? "px-4 py-2 rounded-lg"
+              : "!text-blue-950  hover:shadow-blue-950 hover:shadow-inner px-4 py-2 rounded-lg"
+          }  `}
         />
+        <ProfileDropdown />
       </div>
-
-      <div className="flex flex-col justify-between items-center fixed bottom-10 left-0 sm:w-80 w-60 gap-3 ">
-        <h1
-          className={`sm:text-3xl text-lg font-medium underline  ${isScrolled ? "text-teal-400" : ""
-            }`}
-        >
-          Social Media
-        </h1>
-
-        <ul className=" flex justify-evenly w-full">
-          <li>
-            <a
-              href="#"
-              rel="noreferrer"
-              target="_blank"
-              className={`text-blue-950  hover:text-teal-400 ${isScrolled ? "text-teal-400 hover:!text-blue-950" : ""
-                } transition-all ease-linear duration-300`}
-            >
-              <span className="sr-only">Facebook</span>
-              <RiFacebookBoxFill className="sm:w-8 sm:h-8 w-6 h-6" />
-            </a>
-          </li>
-
-          <li>
-            <a
-              href="https://www.instagram.com/fortius_diagnostics_nagpada?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
-              rel="noreferrer"
-              target="_blank"
-              className={`text-blue-950  hover:text-teal-400 ${isScrolled ? "text-teal-400 hover:!text-blue-950" : ""
-                } transition-all ease-linear duration-300`}
-            >
-              <span className="sr-only">Instagram</span>
-              <RiInstagramFill className="sm:w-8 sm:h-8 w-6 h-6" />
-            </a>
-          </li>
-
-          <li>
-            <a
-              href="#"
-              rel="noreferrer"
-              target="_blank"
-              className={`text-blue-950  hover:text-teal-400 ${isScrolled ? "text-teal-400 hover:!text-blue-950" : ""
-                } transition-all ease-linear duration-300`}
-            >
-              <span className="sr-only">Twitter</span>
-              <RiTwitterXFill className="sm:w-8 sm:h-8 w-6 h-6" />
-            </a>
-          </li>
-
-          <li>
-            <a
-              href="https://www.linkedin.com/company/fortius-diagnostic-centre"
-              rel="noreferrer"
-              target="_blank"
-              className={`text-blue-950  hover:text-teal-400 ${isScrolled ? "text-teal-400 hover:!text-blue-950" : ""
-                } transition-all ease-linear duration-300`}
-            >
-              <span className="sr-only">Linkedin</span>
-              <RiLinkedinBoxFill className="sm:w-8 sm:h-8 w-6 h-6" />
-            </a>
-          </li>
-        </ul>
-      </div>
-    </aside>
+    </nav>
   );
 };
 
-export default Sidebar;
+export default Navbar;

@@ -1,5 +1,5 @@
 import React from "react";
-import MyImage from "../assets/WithLogo.svg";
+import MyImage from "../../assets/WithLogo.svg";
 import { Link } from "react-router-dom";
 import { MyLinks } from "./Button";
 import { Linkedin, Twitter, Instagram, Facebook } from "lucide-react";
@@ -26,7 +26,6 @@ const Footer = () => {
               id="SVGRoot"
               version="1.1"
               xmlns="http://www.w3.org/2000/svg"
-              // xmlns:svg="http://www.w3.org/2000/svg"
             >
               <defs id="defs1" />
               <g id="layer1" transform="translate(-13.738348,-19.961679)">
@@ -189,7 +188,7 @@ const Footer = () => {
         </ul>
       </div>
       <div className="w-full bg-teal-400 p-5 text-center text-2xl font-extrabold">
-      &copy; 2025 Fortius Diagnostic Center
+        &copy; 2025 Fortius Diagnostic Center
       </div>
     </footer>
   );

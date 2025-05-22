@@ -1,14 +1,12 @@
 import React, { useContext } from "react";
 import { MyLinks } from "./Button";
-import { AuthContext } from "../Context/AuthContext";
+import { AuthContext } from "../../Context/AuthContext";
 
 const Hero = () => {
-  const { user } = useContext(AuthContext)
+  const { user } = useContext(AuthContext);
   return (
     <>
-      <section
-        className="w-screen min-h-screen  bg-[url('./assets/New_teal.jpg')] bg-no-repeat bg-cover"
-      >
+      <section className="w-screen min-h-screen  bg-[url('./assets/New_teal.jpg')] bg-no-repeat bg-cover">
         <div className=" relative flex flex-col min-h-screen px-6 py-8 pt-20 mx-auto w-full h-full backdrop-blur-xl bg-teal-400/30 ">
           <section className="flex items-center flex-1">
             <div className="flex flex-col w-full ">
@@ -22,7 +20,7 @@ const Hero = () => {
                     viewBox="0 0 89.653328 22.752891"
                     id="svg35"
                     xmlns="http://www.w3.org/2000/svg"
-                  // xmlns:svg="http://www.w3.org/2000/svg"
+                    // xmlns:svg="http://www.w3.org/2000/svg"
                   >
                     <defs id="defs35" />
                     <path
@@ -215,9 +213,11 @@ const Hero = () => {
               <p className="max-w-3xl mx-auto mt-6  font-medium text-center text-gray-800 text-2xl">
                 Faster | Stronger | Higher
               </p>
-              {user &&
-                <h1 className="text-5xl font-black text-blue-950 text-center m-3">Welcome, {user?.first_name} {user?.last_name}</h1>
-              }
+              {user && (
+                <h1 className="text-5xl font-black text-blue-950 text-center m-3">
+                  Welcome, {user?.first_name} {user?.last_name}
+                </h1>
+              )}
               <div className="flex flex-col items-center justify-center w-full mt-6   max-w-sm mx-auto">
                 <div className="w-full h-64 bg-[url('./assets/PathoCard.webp')] bg-center bg-cover rounded-lg shadow-xl"></div>
 

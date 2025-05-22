@@ -2,11 +2,11 @@ import { useState, useEffect, useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import Button from "../Components/Button";
 import SearchBar from "../Components/subComponent/searchBar";
-import { TestSelection } from "../Context/Context";
+import { TestSelection } from "../../Context/Context";
 import axios from "axios";
-import { AuthContext } from "../Context/AuthContext";
-import { OfferPriceContext } from "../Context/Context";
-import { useAppointment } from "../Context/AppointmentContext";
+import { AuthContext } from "../../Context/AuthContext";
+import { OfferPriceContext } from "../../Context/Context";
+import { useAppointment } from "../../Context/AppointmentContext";
 
 const Appointment = () => {
   const { user } = useContext(AuthContext);
@@ -175,7 +175,7 @@ const Appointment = () => {
         setTimeout(() => {
           setAlertMessage("");
           setAlertType("");
-          navigate(`/billing/${appointmentId}`, { state: { validAccess: true } });
+          navigate(`/diagnostic/billing/${appointmentId}`, { state: { validAccess: true } });
         }, 2000);
       } else {
         throw new Error("No appointment ID in response");

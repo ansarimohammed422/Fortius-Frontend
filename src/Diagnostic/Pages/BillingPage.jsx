@@ -1,7 +1,8 @@
 import { useEffect, useState, useRef, useContext } from "react";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { OfferPriceContext } from "../Context/Context";
+import { OfferPriceContext } from "../../Context/Context";
+
 const BillingPage = () => {
   const { offerPrice } = useContext(OfferPriceContext);
   const { appointmentId } = useParams();

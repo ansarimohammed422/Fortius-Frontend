@@ -1,8 +1,8 @@
 
 import React, { useState, useContext } from "react";
 import Button from "../Button";
-import { TestSelection } from "../../Context/Context";
-import { OfferPriceContext } from "../../Context/Context";
+import { OfferPriceContext } from "../../../Context/Context";
+import { TestSelection } from '../../../Context/Context';
 
 
 const SearchBar = (props) => {

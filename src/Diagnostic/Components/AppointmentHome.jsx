@@ -39,7 +39,7 @@
 // export default AppointmentSection;
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAppointment } from '../Context/AppointmentContext';
+import { useAppointment } from '../../Context/AppointmentContext';
 
 const AppointmentSection = () => {
     const { appointmentData, setAppointmentData } = useAppointment();

@@ -18,7 +18,7 @@ const Button = (props) => {
 
 const MyLinks = (props) => {
   const defaultClass =
-    " text-3xl  font-black  hover:text-blue-950 transition-all ease-linear duration-300  text-teal-400";
+    " text-3xl  font-black  hover:text-blue-950 transition-all ease-linear duration-300  text-olive-500";
   return (
     <Link
       to={props.path}

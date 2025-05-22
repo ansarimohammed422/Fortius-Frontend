@@ -1,26 +1,22 @@
 import React from "react";
-import myImage from "../assets/AboutImage.jpg"; // Adjust path as needed
-
+import myImage from "../../assets/AboutImage.jpg"; // Adjust path as needed
 
 const About = () => {
   return (
     <>
       <section className="flex items-center pt-40 pb-32 w-full h-screen bg-[url('./assets/New_teal.jpg')] bg-no-repeat bg-cover justify-center">
         <div className="my-40 bg-[url('./assets/New_teal.jpg')] bg-cover bg-no-repeat bg-center w-full h-screen flex flex-col gap-20 justify-center items-center">
-          
-            
-            <div className="relative h-auto rounded-3xl w-[1000px]  bg-teal-400/30 backdrop-blur-lg shadow-2xl p-20 flex flex-col justify-center items-center">
-              <h1 className="text-9xl font-black text-blue-950">About Us</h1>
-              <p className="text-xl mt-4 text-blue-950 text-center">
-                Fortius Diagnostic Center is committed to delivering accurate
-                and reliable diagnostic services. With advanced technology and a
-                patient-first approach, we ensure precision and care in every
-                test, supporting your health journey.
-              </p>
-            </div>
-            </div>
-          <div>
+          <div className="relative h-auto rounded-3xl w-[1000px]  bg-teal-400/30 backdrop-blur-lg shadow-2xl p-20 flex flex-col justify-center items-center">
+            <h1 className="text-9xl font-black text-blue-950">About Us</h1>
+            <p className="text-xl mt-4 text-blue-950 text-center">
+              Fortius Diagnostic Center is committed to delivering accurate and
+              reliable diagnostic services. With advanced technology and a
+              patient-first approach, we ensure precision and care in every
+              test, supporting your health journey.
+            </p>
+          </div>
         </div>
+        <div></div>
       </section>
 
       <section className="text-gray-700 bg-white p-10">
@@ -114,7 +110,6 @@ const About = () => {
               src={myImage}
               alt="About Image"
               className="w-full h-auto rounded-2xl shadow-xl"
-
             />
 
             {/* Content */}

@@ -1,12 +1,10 @@
 import React from "react";
 import { useState, useEffect, useContext } from "react";
-import MyImage from "../assets/WithLogo.svg";
-import { MyLinks } from "./Button";
+import { MyLinks } from "../Diagnostic/Components/Button";
 import { NavigationContext } from "../Context/Navigation";
 import { MdPermContactCalendar, MdHome } from "react-icons/md";
 import { BsFillPatchExclamationFill } from "react-icons/bs";
 import { BiFoodMenu } from "react-icons/bi";
-import ProfileDropdown from "./subComponent/ProfileDropDown";
 import { Link } from "react-router-dom";
 
 const Navbar = (props) => {
@@ -62,24 +60,14 @@ const Navbar = (props) => {
 
   return (
     <nav
-      className={`flex justify-between w-full sm:w-screen fixed top-0 z-10 items-center mb-10 rounded-b-xl ${
-        isScrolled ? " bg-gray-50 shadow-lg" : "bg-teal-400/30 backdrop-blur-md"
-      } ${
-        isHidden ? "-translate-y-full" : "translate-y-0"
-      } transition-all ease-linear duration-200
+      className={`flex justify-between w-full sm:w-screen  top-0 z-10 items-center  rounded-b-xl bg-teal-50 shadow-lg"
+       ${
+         isHidden ? "-translate-y-full" : "translate-y-0"
+       } transition-all ease-linear duration-200
     ${props.isOpen ? "sm:pl-80 pl-60" : ""}
     `}
     >
       <div className="flex justify-center items-center   m-3 text-5xl text-blue-900">
-        <button
-          onClick={handleToggleSidebar}
-          className={` text-blue-950 hover:shadow-blue-950 hover:shadow-inner p-2 mr-3  border-blue-950 rounded-xl transition-all ease-linear duration-300 ${
-            sidebarOpen ? "bg-blue-950 text-teal-400" : ""
-          }`}
-        >
-          <BiFoodMenu size={36} />
-        </button>
-
         {/* <img src={MyImage} alt="Logo" className={`w-auto h-14 ${sidebarOpen ? "hidden" : ""}`}></img> */}
         <Link to={"/"}>
           <svg
@@ -156,37 +144,17 @@ const Navbar = (props) => {
       </div>
       <div className="mx-10  hidden gap-4 items-center sm:flex">
         <MyLinks
-          path="/"
-          LName="Home"
-          LIcon={<MdHome size={32} />}
-          customClass={`flex items-center gap-1 ${
-            isScrolled
-              ? "px-4 py-2 rounded-lg"
-              : "!text-blue-950  hover:shadow-blue-950 hover:shadow-inner px-4 py-2 rounded-lg "
-          }  `}
-        />
-
-        <MyLinks
-          path="/Contact"
-          LName="Contact Us"
+          path="/diagnostic"
+          LName="Diagnostics"
           LIcon={<MdPermContactCalendar size={32} />}
-          customClass={`flex items-cenetr gap-1 ${
-            isScrolled
-              ? "px-4 py-2 rounded-lg"
-              : "!text-blue-950  hover:shadow-blue-950 hover:shadow-inner px-4 py-2 rounded-lg"
-          }  `}
+          customClass={`flex items-cenetr gap-1 px-4 py-2 rounded-lg`}
         />
         <MyLinks
-          path="/About"
-          LName="About Us"
+          path="/vet"
+          LName="Veterinary"
           LIcon={<BsFillPatchExclamationFill size={28} />}
-          customClass={`flex items-center gap-1 ${
-            isScrolled
-              ? "px-4 py-2 rounded-lg"
-              : "!text-blue-950  hover:shadow-blue-950 hover:shadow-inner px-4 py-2 rounded-lg"
-          }  `}
+          customClass={`flex items-center gap-1 px-4 py-2 rounded-lg `}
         />
-        <ProfileDropdown />
       </div>
     </nav>
   );

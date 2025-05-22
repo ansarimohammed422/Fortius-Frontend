@@ -38,7 +38,7 @@ export const AuthProvider = ({ children }) => {
         setAccessToken(data.tokens.access);
         setRefreshToken(data.tokens.refresh);
         setError(null); // Clear any existing error
-        navigate("/UserDashboard"); // Redirect after login
+        navigate("/diagnostic/UserDashboard"); // Redirect after login
       } else {
         // Instead of alert, set the error state so UI can display it
         setError(data.error || "Login failed");
@@ -99,7 +99,7 @@ const register = async (username, password, firstName, lastName, email) => {
 
     if (response.ok) {
       setError(null);
-      navigate("/login"); // Redirect to login page on success
+      navigate("/diagnostic/login"); // Redirect to login page on success
     } else {
       // Pick the first validation error from the response
       let errorMessage = "Registration failed";
@@ -129,7 +129,7 @@ const register = async (username, password, firstName, lastName, email) => {
     setAccessToken(null);
     setRefreshToken(null);
     setError(null);
-    navigate("/login"); // Redirect to login
+    navigate("/diagnostic/login"); // Redirect to login
   };
 
   return (

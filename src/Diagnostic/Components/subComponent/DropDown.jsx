@@ -2,8 +2,7 @@ import React, { useState, useEffect, useRef, useContext } from "react";
 import classNames from "classnames";
 import { MyLinks } from "../Button";
 import { MdOutlineMiscellaneousServices } from "react-icons/md";
-
-import { NavigationContext } from "../../Context/Navigation";
+import { NavigationContext } from "../../../Context/Navigation";
 
 const Dropdown = (props) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -60,7 +59,7 @@ const Dropdown = (props) => {
             {TestsServices.map((Services, index) => (
               <li key={index} className="py-1 bg-transparent text-center">
                 <MyLinks
-                  path={`/${Services}`}
+                  path={`/diagnostic/${Services}`}
                   LName={Services}
                   customClass={` ${
                     isScrolled ? "" : "!text-blue-950 hover:!text-blue-950/50"
@@ -112,8 +111,8 @@ const SidebarDropdown = (props) => {
       {/* Dropdown Button */}
       <button
         onClick={toggleDropdown}
-        className={`flex items-center gap-3 w-full px-4 py-2 text-left sm:text-3xl text-lg font-black  hover:shadow-blue-950 hover:shadow-inner rounded-lg 
-          ${isOpen ? "!bg-teal-400 text-blue-950" : ""} 
+        className={`flex items-center gap-3 w-full px-4 py-2 text-left sm:text-3xl text-lg font-black  hover:shadow-blue-950 hover:shadow-inner rounded-lg
+          ${isOpen ? "!bg-teal-400 text-blue-950" : ""}
           ${
             isScrolled
               ? "bg-white text-teal-400 shadow-lg border border-teal-400 hover:bg-blue-950 hover:text-teal-400"
@@ -163,7 +162,7 @@ const SidebarDropdown = (props) => {
         {TestsServices.map((Services, index) => (
           <li key={index} className="px-4 py-2 bg-transparent text-left">
             <MyLinks
-              path={`/${Services}`}
+              path={`/diagnostic/${Services}`}
               LName={Services}
               customClass={`${
                 isScrolled

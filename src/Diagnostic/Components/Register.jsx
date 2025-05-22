@@ -1,5 +1,5 @@
 import { useState, useContext } from "react";
-import { AuthContext } from "../Context/AuthContext";
+import { AuthContext } from "../../Context/AuthContext";
 import { useParams, useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa"; // Import eye icons
@@ -120,7 +120,7 @@ const Register = () => {
         <div className="p-3 text-center">
           Already a user :{" "}
           <Link
-            to="/login"
+            to="/diagnostic/login"
             className="hover:text-blue-900 hover:underline font-black"
           >
             Login

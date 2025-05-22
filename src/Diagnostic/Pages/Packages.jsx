@@ -156,7 +156,7 @@ const PackagesPage = () => {
   console.log("Packages:- " + packages);
 
   const handleBook = (tests, pkg) => {
-    navigate("/appointment", {
+    navigate("/diagnostic/Appointment", {
       state: { selectedTestIds: tests, offerPrice: pkg.offer_price },
     });
   };

@@ -1,9 +1,9 @@
 import { useState, useContext, useEffect, useRef } from "react";
-import { AuthContext } from "../../Context/AuthContext";
+import { AuthContext } from "../../../Context/AuthContext";
 import { Link } from "react-router-dom";
 import { IoPersonCircleSharp } from "react-icons/io5";
-import { NavigationContext } from "../../Context/Navigation";
 
+import { NavigationContext } from '../../../Context/Navigation';
 const ProfileDropdown = () => {
     const { isScrolled } = useContext(NavigationContext);
     const { user, logout } = useContext(AuthContext);
@@ -54,14 +54,14 @@ const ProfileDropdown = () => {
                                 Logout
                             </button>
                             <Link
-                                to="/UserDashboard"
+                                to="/diagnostic/UserDashboard"
                                 onClick={() => setIsOpen(false)}
                                 className="block px-4 py-2 hover:bg-blue-950 hover:text-teal-400 text-xl font-bold transition-all ease-linear duration-300"
                             >
                                 Profile
                             </Link>
                             <Link
-                                to="/membership"
+                                to="/diagnostic/membership"
                                 onClick={() => setIsOpen(false)}
                                 className="block px-4 py-2 hover:bg-blue-950 hover:text-teal-400 text-xl font-bold transition-all ease-linear duration-300 rounded-b-lg"
                             >
@@ -71,14 +71,14 @@ const ProfileDropdown = () => {
                     ) : (
                         <>
                             <Link
-                                to="/login"
+                                to="/diagnostic/login"
                                 onClick={() => setIsOpen(false)}
                                 className="block px-4 py-2 hover:bg-blue-950 hover:text-teal-400 text-xl font-bold transition-all ease-linear duration-300 rounded-t-lg"
                             >
                                 Login
                             </Link>
                             <Link
-                                to="/register"
+                                to="/diagnostic/register"
                                 onClick={() => setIsOpen(false)}
                                 className="block px-4 py-2 hover:bg-blue-950 hover:text-teal-400 text-xl font-bold transition-all ease-linear duration-300 rounded-b-lg"
                             >

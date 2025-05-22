@@ -32,10 +32,8 @@ const Contact = () => {
       );
 
       if (response.status === 201) {
-        
-          setResponseMessage("Form submitted successfully!");
-    
-          
+        setResponseMessage("Form submitted successfully!");
+
         setFormData({
           name: "",
           email: "",
@@ -43,8 +41,7 @@ const Contact = () => {
           message: "",
         });
       } else {
-          setResponseMessage("Something went wrong. Please try again.");
-
+        setResponseMessage("Something went wrong. Please try again.");
       }
     } catch (error) {
       console.error("Error submitting form:", error);
@@ -58,13 +55,13 @@ const Contact = () => {
 
   return (
     <>
-      <section className="bg-[url('./assets/New_teal.jpg')] bg-no-repeat bg-cover  pt-20 pb-20 h-full top-1">
+      <section className="bg-[url('./assets/VetHero.jpg')] bg-center bg-no-repeat bg-cover  pt-20 pb-20 h-full top-1">
         <div className="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8 h-auto">
           <div className="text-center m-10 text-9xl font-black text-transparent bg-clip-text bg-blue-950 drop-shadow-xl">
             Contact us
           </div>
           <div className="grid grid-cols-1 gap-x-16 gap-y-8 lg:grid-cols-5">
-            <div className=" text-blue-950 lg:mx-6 lg:col-span-2 bg-teal-400/30 p-10 rounded-xl backdrop-blur-lg border-2 border-blue-950 w-full h-auto ">
+            <div className=" text-blue-950 lg:mx-6 lg:col-span-2 bg-olive-500/30 p-10 rounded-xl backdrop-blur-lg border-2 border-blue-950 w-full h-auto ">
               <h1 className="text-5xl font-bold capitalize lg:text-3xl">
                 Get a quote
               </h1>
@@ -118,7 +115,7 @@ const Contact = () => {
                   </svg>
 
                   <span className="mx-2  truncate w-72 text-blue-950">
-                    +91 9076115232 | +91 9820115232
+                    +91 9619523278
                   </span>
                 </p>
 
@@ -139,7 +136,7 @@ const Contact = () => {
                   </svg>
 
                   <span className="mx-2 text-blue-950 truncate w-72">
-                    fortiusdiagnosticcenter@gmail.com
+                    fortiusvetcare@gmail.com{" "}
                   </span>
                 </p>
               </div>
@@ -220,12 +217,11 @@ const Contact = () => {
                       />
                     </svg>
                   </a>
-
                 </div>
               </div>
             </div>
 
-            <div className="rounded-lg bg-teal-400/30 border-2 border-blue-950  p-8 shadow-xl lg:col-span-3 lg:p-12 filter backdrop-blur-lg w-full">
+            <div className="rounded-lg bg-olive-500/30 border-2 border-blue-950  p-8 shadow-xl lg:col-span-3 lg:p-12 filter backdrop-blur-lg w-full">
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
                   <label className="sr-only" htmlFor="name">
@@ -297,20 +293,19 @@ const Contact = () => {
                 </div>
 
                 {responseMessage && (
-              <div
-                className={`mt-4 p-4 rounded-lg text-center ${
-                  responseMessage.includes("successfully")
-                    ? "bg-transparent text-blue-950 border border-blue-950"
-                    : "bg-red-600/30    text-red-700 border border-red-950"
-                }`}
-              >
-                {responseMessage}
-              </div>
-            )}
+                  <div
+                    className={`mt-4 p-4 rounded-lg text-center ${
+                      responseMessage.includes("successfully")
+                        ? "bg-transparent text-blue-950 border border-blue-950"
+                        : "bg-red-600/30    text-red-700 border border-red-950"
+                    }`}
+                  >
+                    {responseMessage}
+                  </div>
+                )}
               </form>
 
               {/* Display Response Message */}
-            
             </div>
           </div>
         </div>
