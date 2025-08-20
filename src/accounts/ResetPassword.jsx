@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
-
+const API_URL = import.meta.env.VITE_API_URL;
 export default function ResetPassword() {
   const { uidb64, token } = useParams();
   const [password, setPassword] = useState("");
@@ -31,9 +31,12 @@ export default function ResetPassword() {
 
     setLoading(true);
     try {
-      const res = await axios.post(`http://localhost:8000/api/reset-password/${uidb64}/${token}/`, {
-        password,
-      });
+      const res = await axios.post(
+        `${API_URL}/api/reset-password/${uidb64}/${token}/`,
+        {
+          password,
+        },
+      );
 
       if (res.status === 200) {
         setMsg(res.data.message || "✅ Password reset successful.");
@@ -53,7 +56,9 @@ export default function ResetPassword() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-[url('./assets/New_teal.jpg')] bg-center bg-cover p-4">
       <div className="bg-teal-400/30 backdrop-blur-md shadow-xl rounded-2xl p-8 w-full max-w-md border border-blue-950">
-        <h2 className="text-2xl font-semibold text-blue-950 text-center mb-6">🔒 Reset Your Password</h2>
+        <h2 className="text-2xl font-semibold text-blue-950 text-center mb-6">
+          🔒 Reset Your Password
+        </h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <input
@@ -74,7 +79,9 @@ export default function ResetPassword() {
               } bg-transparent text-blue-950 placeholder-blue-950/70 focus:outline-none focus:shadow-inner focus:shadow-blue-950 transition-all duration-300 ease-linear`}
             />
             {showMismatchError && (
-              <p className="text-sm text-red-500 mt-1">⚠️ Passwords do not match</p>
+              <p className="text-sm text-red-500 mt-1">
+                ⚠️ Passwords do not match
+              </p>
             )}
           </div>
 
@@ -87,8 +94,12 @@ export default function ResetPassword() {
           </button>
         </form>
 
-        {error && <p className="text-center mt-4 text-red-500 font-medium">{error}</p>}
-        {msg && <p className="text-center mt-4 text-green-300 font-medium">{msg}</p>}
+        {error && (
+          <p className="text-center mt-4 text-red-500 font-medium">{error}</p>
+        )}
+        {msg && (
+          <p className="text-center mt-4 text-green-300 font-medium">{msg}</p>
+        )}
       </div>
     </div>
   );

@@ -8,6 +8,8 @@ import { AuthContext } from "../Context/AuthContext";
 import { OfferPriceContext } from "../Context/Context";
 import { useAppointment } from "../Context/AppointmentContext";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 const Appointment = () => {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -15,16 +17,18 @@ const Appointment = () => {
   const { offerPrice, setOfferPrice } = useContext(OfferPriceContext);
   const { appointmentData } = useAppointment();
 
-
-  const [pkgprice, setpkgprice] = useState(location.state?.offerPrice || null)
+  const [pkgprice, setpkgprice] = useState(location.state?.offerPrice || null);
   const [selectedDate, setSelectedDate] = useState("");
   const [selectedTime, setSelectedTime] = useState("");
-  const [selectedTest, setSelectedTest] = useState(location.state?.selectedTestIds || []);
+  const [selectedTest, setSelectedTest] = useState(
+    location.state?.selectedTestIds || [],
+  );
   // const [inputtags, setInputTags] = useState({ Name: `${user.first_name} ${user.last_name}`, Email: user.email, Phone: "", Address: "" });
   const [inputtags, setInputTags] = useState({
-    Name: user?.first_name && user?.last_name
-      ? `${user.first_name} ${user.last_name}`
-      : appointmentData?.name || "",
+    Name:
+      user?.first_name && user?.last_name
+        ? `${user.first_name} ${user.last_name}`
+        : appointmentData?.name || "",
     Email: user?.email || appointmentData?.email || "",
     Phone: appointmentData?.number || "",
     Address: "",
@@ -33,8 +37,7 @@ const Appointment = () => {
   const [homeSample, setHomeSample] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
   const [alertType, setAlertType] = useState("");
-  const [PhoneError, setPhoneError] = useState(false)
-
+  const [PhoneError, setPhoneError] = useState(false);
 
   useEffect(() => {
     const newOffer = location.state?.offerPrice || null;
@@ -67,11 +70,9 @@ const Appointment = () => {
       try {
         const token = localStorage.getItem("accessToken");
 
-        const headers = token
-          ? { Authorization: `Bearer ${token}` }
-          : {}; // No auth for guests
+        const headers = token ? { Authorization: `Bearer ${token}` } : {}; // No auth for guests
 
-        const { data } = await axios.get("http://127.0.0.1:8000/api/tests/", {
+        const { data } = await axios.get(`${API_URL}/api/tests/`, {
           headers,
         });
 
@@ -81,7 +82,6 @@ const Appointment = () => {
         console.error("Error fetching tests:", error);
       }
     };
-
 
     fetchTests(); // Always fetch fresh in background
   }, []);
@@ -161,9 +161,9 @@ const Appointment = () => {
       }
 
       const response = await axios.post(
-        "http://127.0.0.1:8000/api/appointments/",
+        `${API_URL}/api/appointments/`,
         appointmentData,
-        { headers }
+        { headers },
       );
 
       if (response.data.id) {
@@ -175,7 +175,9 @@ const Appointment = () => {
         setTimeout(() => {
           setAlertMessage("");
           setAlertType("");
-          navigate(`/billing/${appointmentId}`, { state: { validAccess: true } });
+          navigate(`/billing/${appointmentId}`, {
+            state: { validAccess: true },
+          });
         }, 2000);
       } else {
         throw new Error("No appointment ID in response");
@@ -191,41 +193,48 @@ const Appointment = () => {
     }
   };
 
-
   return (
     <div className="w-screen p-40 ">
       <TestSelection.Provider value={{ selectedTest, setSelectedTest }}>
         <div className="max-w-7xl flex justify-center items-center mx-auto">
-        <div className='w-full [background:linear-gradient(45deg,#F0FDFA,theme(colors.teal.50)_50%,#F0FDFA)_padding-box,conic-gradient(from_var(--border-angle),theme(colors.teal.400)_80%,_theme(colors.teal.500)_86%,_theme(colors.teal.600)_90%,_theme(colors.teal.700)_94%,_theme(colors.blue.950))_border-box] border-4 border-transparent animate-border rounded-full  overflow-hidden'>
-
-          <div className=" overflow-hidden rounded-full bg-[url('./assets/New_teal.jpg')] bg-cover bg-no-repeat text-blue-950 text-center shadow-xl shadow-gray-300">
-            {alertMessage && (
-              <div
-                className={`fixed top-5 z-10 mt-40 left-1/2 transform -translate-x-1/2 w-3/4 max-w-lg px-4 py-3 rounded-lg text-white text-center ${alertType === "success" ? "bg-green-500" : "bg-red-500"
+          <div className="w-full [background:linear-gradient(45deg,#F0FDFA,theme(colors.teal.50)_50%,#F0FDFA)_padding-box,conic-gradient(from_var(--border-angle),theme(colors.teal.400)_80%,_theme(colors.teal.500)_86%,_theme(colors.teal.600)_90%,_theme(colors.teal.700)_94%,_theme(colors.blue.950))_border-box] border-4 border-transparent animate-border rounded-full  overflow-hidden">
+            <div className=" overflow-hidden rounded-full bg-[url('./assets/New_teal.jpg')] bg-cover bg-no-repeat text-blue-950 text-center shadow-xl shadow-gray-300">
+              {alertMessage && (
+                <div
+                  className={`fixed top-5 z-10 mt-40 left-1/2 transform -translate-x-1/2 w-3/4 max-w-lg px-4 py-3 rounded-lg text-white text-center ${
+                    alertType === "success" ? "bg-green-500" : "bg-red-500"
                   }`}
-              >
-                {alertMessage}
+                >
+                  {alertMessage}
+                </div>
+              )}
+              <div className="p-10 bg-teal-400/30 filter backdrop-blur-lg py-20 w-full h-full">
+                <h1 className="mt-2 px-8 text-3xl font-bold md:text-8xl text-blue-950">
+                  Book an Appointment
+                </h1>
+                <p className="mt-6 text-lg text-blue-950">
+                  Get an appointment at{" "}
+                  <span className="ml-1 font-extrabold inline text-blue-950">
+                    Fortius
+                  </span>
+                </p>
               </div>
-            )}
-            <div className="p-10 bg-teal-400/30 filter backdrop-blur-lg py-20 w-full h-full">
-              <h1 className="mt-2 px-8 text-3xl font-bold md:text-8xl text-blue-950">Book an Appointment</h1>
-              <p className="mt-6 text-lg text-blue-950">
-                Get an appointment at{" "}
-                <span className="ml-1 font-extrabold inline text-blue-950">Fortius</span>
-              </p>
             </div>
           </div>
-        </div>
         </div>
 
         <div className="mx-auto grid max-w-screen-lg px-6 pb-20">
           <div className="my-10 flex flex-col gap-6">
-            <p className="text-2xl font-extrabold text-blue-950">Search for a Tests:</p>
+            <p className="text-2xl font-extrabold text-blue-950">
+              Search for a Tests:
+            </p>
             <SearchBar alltests={tests} offerPrice={pkgprice} />
           </div>
 
           <div className="mb-10">
-            <p className="text-2xl my-5 font-extrabold text-blue-950">Fill in Details</p>
+            <p className="text-2xl my-5 font-extrabold text-blue-950">
+              Fill in Details
+            </p>
             <div className="grid grid-cols-3 gap-6 sm:grid-cols-2">
               <div className="relative flex flex-col gap-4 text-xl text-blue-950">
                 <label>Select a date</label>
@@ -242,8 +251,9 @@ const Appointment = () => {
                 <input
                   type="text"
                   value={inputtags.Name}
-                  onChange={(e) => setInputTags({ ...inputtags, Name: e.target.value })}
-
+                  onChange={(e) =>
+                    setInputTags({ ...inputtags, Name: e.target.value })
+                  }
                   className="px-4 py-2 w-full bg-white rounded-full border border-teal-400 focus:ring focus:shadow-teal-400 focus:shadow-md focus:ring-teal-400 focus:outline-none transition-all ease-linear duration-300"
                   placeholder="Enter Name"
                 />
@@ -255,8 +265,9 @@ const Appointment = () => {
                   value={inputtags.Email}
                   className="px-4 py-2 w-full bg-white rounded-full border border-teal-400 focus:ring focus:shadow-teal-400 focus:shadow-md focus:ring-teal-400 focus:outline-none transition-all ease-linear duration-300"
                   placeholder="Enter Email"
-                  onChange={(e) => setInputTags({ ...inputtags, Email: e.target.value })}
-
+                  onChange={(e) =>
+                    setInputTags({ ...inputtags, Email: e.target.value })
+                  }
                 />
               </div>
               <div className="relative flex flex-col gap-4 text-xl text-blue-950">
@@ -265,12 +276,18 @@ const Appointment = () => {
                   type="tel"
                   name="Phone"
                   value={inputtags.Phone}
-                  onChange={(e) => setInputTags({ ...inputtags, Phone: e.target.value })}
+                  onChange={(e) =>
+                    setInputTags({ ...inputtags, Phone: e.target.value })
+                  }
                   className="px-4 py-2 w-full bg-white rounded-full border border-teal-400 focus:ring focus:shadow-teal-400 focus:shadow-md focus:ring-teal-400 focus:outline-none transition-all ease-linear duration-300"
                   placeholder="Enter Your Number"
                   required
                 />
-                {PhoneError && <div className="text-sm m-0 text-red-500">* number less than 10 digits</div>}
+                {PhoneError && (
+                  <div className="text-sm m-0 text-red-500">
+                    * number less than 10 digits
+                  </div>
+                )}
               </div>
               <div className="relative flex flex-col gap-4 text-xl text-blue-950">
                 <label>Select Time</label>
@@ -308,7 +325,9 @@ const Appointment = () => {
                 type="text"
                 placeholder="Enter your address"
                 value={inputtags.Address}
-                onChange={(e) => setInputTags({ ...inputtags, Address: e.target.value })}
+                onChange={(e) =>
+                  setInputTags({ ...inputtags, Address: e.target.value })
+                }
                 className="mt-3 px-4 py-2 w-full bg-white rounded-lg border border-teal-400 focus:ring focus:shadow-teal-400 focus:shadow-md focus:ring-teal-400 focus:outline-none transition-all ease-linear duration-300"
               />
             )}

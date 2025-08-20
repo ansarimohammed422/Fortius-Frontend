@@ -133,11 +133,12 @@
 
 // export default MembershipPage;
 
-
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { FaCheckCircle, FaTimesCircle, FaCrown } from "react-icons/fa";
 import { Link } from "react-router-dom";
+
+const API_URL = import.meta.env.VITE_API_URL;
 
 const MembershipPage = () => {
   const [plans, setPlans] = useState([]);
@@ -148,7 +149,7 @@ const MembershipPage = () => {
   useEffect(() => {
     // Fetch Membership Plans
     axios
-      .get("http://127.0.0.1:8000/api/membership/plans/")
+      .get(`${API_URL}/api/membership/plans/`)
       .then((response) => {
         setPlans(response.data);
       })
@@ -157,41 +158,48 @@ const MembershipPage = () => {
     // Fetch User Membership Status
     if (token) {
       axios
-        .get("http://127.0.0.1:8000/api/membership/status/", {
+        .get(`${API_URL}/api/membership/status/`, {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then((response) => setUserMembership(response.data))
-        .catch((error) => console.error("Error fetching user membership:", error));
+        .catch((error) =>
+          console.error("Error fetching user membership:", error),
+        );
     }
 
     // Fetch Test Packages
     if (token) {
       axios
-        .get("http://127.0.0.1:8000/api/packages/", {
+        .get(`${API_URL}/api/packages/`, {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then((response) => setTestPackages(response.data))
-        .catch((error) => console.error("Error fetching test packages:", error));
+        .catch((error) =>
+          console.error("Error fetching test packages:", error),
+        );
     }
   }, [token]);
 
   const handleSubscribe = (planId) => {
     axios
       .post(
-        "http://127.0.0.1:8000/api/membership/subscribe/",
+        `${API_URL}/api/membership/subscribe/`,
         { plan_id: planId },
-        { headers: { Authorization: `Bearer ${token}` } }
+        { headers: { Authorization: `Bearer ${token}` } },
       )
       .then((response) => {
         alert("Subscription Successful!");
-        setUserMembership({ plan: response.data.plan, end_date: response.data.end_date });
+        setUserMembership({
+          plan: response.data.plan,
+          end_date: response.data.end_date,
+        });
       })
       .catch((error) => console.error("Error subscribing:", error));
   };
 
   const handleUnsubscribe = () => {
     axios
-      .delete("http://127.0.0.1:8000/api/membership/unsubscribe/", {
+      .delete(`${API_URL}/api/membership/unsubscribe/`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(() => {
@@ -212,13 +220,16 @@ const MembershipPage = () => {
             </h2>
             <div className="space-y-4">
               <p className="text-xl ">
-                <span className="font-semibold">Plan:</span> {userMembership.plan}
+                <span className="font-semibold">Plan:</span>{" "}
+                {userMembership.plan}
               </p>
               <p className="text-lg ">
-                <span className="font-semibold">Expires on:</span> {userMembership.end_date}
+                <span className="font-semibold">Expires on:</span>{" "}
+                {userMembership.end_date}
               </p>
               <p className="text-lg ">
-                <span className="font-semibold">Discount:</span> {userMembership.discount_percentage}%
+                <span className="font-semibold">Discount:</span>{" "}
+                {userMembership.discount_percentage}%
               </p>
             </div>
 
@@ -236,27 +247,34 @@ const MembershipPage = () => {
               <h3 className="text-2xl text-teal-400">Membership Benefits</h3>
               <ul className="list-none space-y-2 ">
                 <li className="flex items-center">
-                  <FaCheckCircle className="text-teal-400 mr-2" /> Exclusive Discounts
+                  <FaCheckCircle className="text-teal-400 mr-2" /> Exclusive
+                  Discounts
                 </li>
                 <li className="flex items-center">
-                  <FaCheckCircle className="text-teal-400 mr-2" /> Priority Booking
+                  <FaCheckCircle className="text-teal-400 mr-2" /> Priority
+                  Booking
                 </li>
                 <li className="flex items-center">
-                  <FaCheckCircle className="text-teal-400 mr-2" /> Free Consultation Calls
+                  <FaCheckCircle className="text-teal-400 mr-2" /> Free
+                  Consultation Calls
                 </li>
               </ul>
             </div>
 
             {/* Display Test Packages with Discounts */}
             <div className="mt-8">
-              <h3 className="text-2xl text-teal-400 mb-6">Exclusive Test Packages</h3>
+              <h3 className="text-2xl text-teal-400 mb-6">
+                Exclusive Test Packages
+              </h3>
               <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-6">
                 {testPackages.map((packages) => (
                   <div
                     key={packages.id}
                     className=" bg-teal-100 border border-teal-400 rounded-xl shadow-xl p-6 transform transition-all hover:scale-105 duration-300 ease-linear"
                   >
-                    <h3 className="text-2xl text-teal-400 font-semibold">{packages.name}</h3>
+                    <h3 className="text-2xl text-teal-400 font-semibold">
+                      {packages.name}
+                    </h3>
                     <p className="text-lg  mt-2">₹{packages.original_price}</p>
                     <p className="text-lg  mt-2">
                       Discounted Price:{" "}
@@ -273,7 +291,9 @@ const MembershipPage = () => {
         ) : (
           // Membership Plans Section for Non-Subscribers
           <section className="text-center space-y-8 py-20">
-            <h2 className="text-3xl font-bold text-blue-950">Choose Your Membership Plan</h2>
+            <h2 className="text-3xl font-bold text-blue-950">
+              Choose Your Membership Plan
+            </h2>
 
             <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-6">
               {plans.map((plan) => (
@@ -281,10 +301,15 @@ const MembershipPage = () => {
                   key={plan.id}
                   className=" bg-teal-400/30 backdrop-blur-lg rounded-xl shadow-xl p-6 transform transition-all hover:scale-105 duration-300 ease-linear"
                 >
-                  <h3 className="text-2xl text-blue-950 font-semibold ">{plan.name}</h3>
+                  <h3 className="text-2xl text-blue-950 font-semibold ">
+                    {plan.name}
+                  </h3>
                   <p className="text-lg text-teal-50 mt-2">₹{plan.price}</p>
                   <p className="text-lg text-blue-950 mt-2">
-                    Discount: <span className="text-teal-50">{plan.discount_percentage}%</span>
+                    Discount:{" "}
+                    <span className="text-teal-50">
+                      {plan.discount_percentage}%
+                    </span>
                   </p>
 
                   <button

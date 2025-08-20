@@ -3,6 +3,8 @@ import axios from "axios";
 import { Link } from "react-router-dom"; // Import Link from react-router-dom
 import ReactMarkdown from "react-markdown"; // Import ReactMarkdown
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 const Blog = () => {
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -10,7 +12,7 @@ const Blog = () => {
 
   useEffect(() => {
     axios
-      .get("http://127.0.0.1:8000/api/blogs/")
+      .get(`${API_URL}/api/blogs/`)
       .then((response) => {
         setBlogs(response.data);
         setLoading(false);
@@ -32,7 +34,7 @@ const Blog = () => {
   const filteredBlogs = blogs.filter(
     (blog) =>
       blog.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      blog.content.toLowerCase().includes(searchTerm.toLowerCase())
+      blog.content.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
   return (
@@ -57,7 +59,7 @@ const Blog = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10 ">
             {filteredBlogs.map(
               (
-                blog // Map over filteredBlogs
+                blog, // Map over filteredBlogs
               ) => (
                 <Link
                   key={blog.id}
@@ -81,7 +83,7 @@ const Blog = () => {
                     {new Date(blog.created_at).toLocaleString()}
                   </p>
                 </Link>
-              )
+              ),
             )}
           </div>
         )}

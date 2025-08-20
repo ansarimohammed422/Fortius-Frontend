@@ -127,6 +127,8 @@ import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 const PackagesPage = () => {
   const [packages, setPackages] = useState([]);
   const [userMembership, setUserMembership] = useState(null);
@@ -136,7 +138,7 @@ const PackagesPage = () => {
 
   useEffect(() => {
     axios
-      .get("http://127.0.0.1:8000/api/packages/", {
+      .get(`${API_URL}/api/packages/`, {
         headers: token ? { Authorization: `Bearer ${token}` } : {},
       })
       .then((res) => setPackages(res.data))
@@ -144,7 +146,7 @@ const PackagesPage = () => {
 
     if (token) {
       axios
-        .get("http://127.0.0.1:8000/api/membership/status/", {
+        .get(`${API_URL}/api/membership/status/`, {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then((res) => setUserMembership(res.data))

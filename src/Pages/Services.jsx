@@ -155,7 +155,6 @@
 
 // export default Services;
 
-
 import React, { useState } from "react";
 import { MyLinks } from "../Components/Button";
 
@@ -166,7 +165,11 @@ const Services = () => {
       image: "./assets/Hematology.jpg",
       description:
         "Hematology is the branch of medicine that studies blood, blood-forming tissues, and blood disorders...",
-      tests: ["Complete Blood Count (CBC)", "Coagulation Profile", "Bone Marrow Biopsy"],
+      tests: [
+        "Complete Blood Count (CBC)",
+        "Coagulation Profile",
+        "Bone Marrow Biopsy",
+      ],
     },
     {
       name: "Microbiology",
@@ -180,14 +183,22 @@ const Services = () => {
       image: "./assets/serology.jpg",
       description:
         "Serology examines the blood serum to detect antibodies and antigens, providing insight into infections...",
-      tests: ["HIV Antibody Test", "Hepatitis B Surface Antigen", "Malaria Parasite Antigen Test"],
+      tests: [
+        "HIV Antibody Test",
+        "Hepatitis B Surface Antigen",
+        "Malaria Parasite Antigen Test",
+      ],
     },
     {
       name: "Biochemistry",
       image: "./assets/biochemistry.jpg",
       description:
         "Biochemistry involves the study of the chemical processes that occur within living organisms...",
-      tests: ["Liver Function Test (LFT)", "Kidney Function Test (KFT)", "Lipid Profile"],
+      tests: [
+        "Liver Function Test (LFT)",
+        "Kidney Function Test (KFT)",
+        "Lipid Profile",
+      ],
     },
     {
       name: "Radiology",
@@ -199,7 +210,7 @@ const Services = () => {
   ];
 
   const [showMoreStates, setShowMoreStates] = useState(
-    Array(services.length).fill(false)
+    Array(services.length).fill(false),
   );
 
   const toggleShowMore = (index) => {
@@ -213,9 +224,12 @@ const Services = () => {
       {/* Hero Section */}
       <section className="relative bg-[url('./assets/New_teal.jpg')] bg-cover bg-center text-white h-screen flex items-center justify-center">
         <div className="text-center bg-teal-400/30 backdrop-blur-lg rounded-xl p-20 border-2 border-blue-950 shadow-lg">
-          <h1 className="text-9xl font-extrabold text-blue-950">Fortius Services</h1>
+          <h1 className="text-9xl font-extrabold text-blue-950">
+            Fortius Services
+          </h1>
           <p className="mt-4 mb-10 text-2xl text-blue-950">
-            Explore our comprehensive range of diagnostic services to guide you toward better health.
+            Explore our comprehensive range of diagnostic services to guide you
+            toward better health.
           </p>
           <div className="mt-6">
             <MyLinks
@@ -277,8 +291,9 @@ const Services = () => {
                     >
                       <div className="p-6 bg-teal-50 rounded-lg shadow-md border border-blue-950">
                         <p className="text-lg text-blue-950/70">
-                          Here you can add further details about the service, diagnostic procedures,
-                          patient outcomes, and advanced technologies used in the service.
+                          Here you can add further details about the service,
+                          diagnostic procedures, patient outcomes, and advanced
+                          technologies used in the service.
                         </p>
                       </div>
                     </div>
@@ -296,7 +311,9 @@ const Services = () => {
                         key={idx}
                         className="bg-teal-50 p-6 rounded-xl shadow-md border border-teal-300 hover:bg-teal-100 hover:scale-105 transform transition-all ease-linear duration-500"
                       >
-                        <p className="text-xl font-medium text-blue-950">{test}</p>
+                        <p className="text-xl font-medium text-blue-950">
+                          {test}
+                        </p>
                       </div>
                     ))}
                   </div>
@@ -311,4 +328,3 @@ const Services = () => {
 };
 
 export default Services;
-

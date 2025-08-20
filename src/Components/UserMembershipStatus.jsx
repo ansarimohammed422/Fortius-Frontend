@@ -90,6 +90,7 @@ import { useEffect } from "react";
 import axios from "axios";
 import { FaCheckCircle, FaTimesCircle, FaCrown } from "react-icons/fa";
 import { Link } from "react-router-dom";
+const API_URL = import.meta.env.VITE_API_URL;
 
 const UserMembershipStatus = (props) => {
   const token = localStorage.getItem("accessToken");
@@ -97,7 +98,7 @@ const UserMembershipStatus = (props) => {
   useEffect(() => {
     if (token) {
       axios
-        .get("http://127.0.0.1:8000/api/membership/status/", {
+        .get(`${API_URL}/api/membership/status/`, {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then((response) => props.setMembership(response.data))
@@ -107,7 +108,7 @@ const UserMembershipStatus = (props) => {
 
   const handleUnsubscribe = () => {
     axios
-      .delete("http://127.0.0.1:8000/api/membership/unsubscribe/", {
+      .delete(`${API_URL}/api/membership/unsubscribe/`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(() => {
@@ -132,45 +133,63 @@ const UserMembershipStatus = (props) => {
           {props.membership ? (
             <div>
               <p className="text-xl font-semibold text-gray-800">
-                Plan: <span className="text-teal-400">{props.membership.plan}</span>
+                Plan:{" "}
+                <span className="text-teal-400">{props.membership.plan}</span>
               </p>
               <p className="text-lg text-gray-600">
-                Discount: <span className="font-medium">{props.membership.discount}%</span>
+                Discount:{" "}
+                <span className="font-medium">
+                  {props.membership.discount}%
+                </span>
               </p>
               <p className="text-lg text-gray-600">
-                Start Date: <span className="font-medium">{props.membership.start_date}</span>
+                Start Date:{" "}
+                <span className="font-medium">
+                  {props.membership.start_date}
+                </span>
               </p>
               <p className="text-lg text-gray-600">
-                Expires on: <span className="font-medium">{props.membership.end_date}</span>
+                Expires on:{" "}
+                <span className="font-medium">{props.membership.end_date}</span>
               </p>
 
               {/* Progress Bar */}
               <div className="mt-4">
                 <p className="text-sm text-gray-700">Membership Progress</p>
                 <div className="w-full bg-gray-200 rounded-full h-2.5">
-                  <div className="bg-teal-400 h-2.5 rounded-full" style={{ width: "75%" }}></div>
+                  <div
+                    className="bg-teal-400 h-2.5 rounded-full"
+                    style={{ width: "75%" }}
+                  ></div>
                 </div>
               </div>
 
               {/* Membership Benefits */}
               <div className="mt-6 space-y-2">
-                <p className="text-lg font-semibold text-gray-800">Membership Benefits:</p>
+                <p className="text-lg font-semibold text-gray-800">
+                  Membership Benefits:
+                </p>
                 <ul className="list-none space-y-2">
                   <li className="flex items-center text-gray-700">
-                    <FaCheckCircle className="text-teal-400 mr-2" /> Exclusive Discounts
+                    <FaCheckCircle className="text-teal-400 mr-2" /> Exclusive
+                    Discounts
                   </li>
                   <li className="flex items-center text-gray-700">
-                    <FaCheckCircle className="text-teal-400 mr-2" /> Priority Booking
+                    <FaCheckCircle className="text-teal-400 mr-2" /> Priority
+                    Booking
                   </li>
                   <li className="flex items-center text-gray-700">
-                    <FaCheckCircle className="text-teal-400 mr-2" /> Free Consultation Calls
+                    <FaCheckCircle className="text-teal-400 mr-2" /> Free
+                    Consultation Calls
                   </li>
                 </ul>
               </div>
             </div>
           ) : (
             <div className="text-center">
-              <p className="text-lg text-gray-700 font-medium">No active membership</p>
+              <p className="text-lg text-gray-700 font-medium">
+                No active membership
+              </p>
               <span className="mt-2 px-3 py-1 text-sm font-semibold text-white bg-gray-500 rounded-full">
                 Inactive
               </span>
@@ -184,7 +203,9 @@ const UserMembershipStatus = (props) => {
             <>
               <span
                 className={`px-6 py-2 text-lg font-semibold text-white rounded-full ${
-                  props.membership.status === "Approved" ? "bg-green-500" : "bg-red-500"
+                  props.membership.status === "Approved"
+                    ? "bg-green-500"
+                    : "bg-red-500"
                 }`}
               >
                 {props.membership.status}
@@ -197,13 +218,18 @@ const UserMembershipStatus = (props) => {
                 Unsubscribe
               </button>
 
-              <Link to="/membership" className="bg-teal-500 text-white font-medium px-8 py-3 rounded-lg hover:bg-teal-600 transition-all duration-300">
+              <Link
+                to="/membership"
+                className="bg-teal-500 text-white font-medium px-8 py-3 rounded-lg hover:bg-teal-600 transition-all duration-300"
+              >
                 Know More
               </Link>
             </>
           ) : (
             <div className="text-center">
-              <p className="text-lg font-medium text-gray-700">Want to unlock benefits?</p>
+              <p className="text-lg font-medium text-gray-700">
+                Want to unlock benefits?
+              </p>
               <button className="bg-teal-500 text-white font-medium px-8 py-3 rounded-lg hover:bg-teal-600 transition-all duration-300">
                 Get Membership
               </button>

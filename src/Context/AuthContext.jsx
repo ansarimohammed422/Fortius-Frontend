@@ -1,16 +1,16 @@
-
 import { createContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 export const AuthContext = createContext();
+const API_URL = import.meta.env.VITE_API_URL;
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [accessToken, setAccessToken] = useState(
-    localStorage.getItem("accessToken")
+    localStorage.getItem("accessToken"),
   );
   const [refreshToken, setRefreshToken] = useState(
-    localStorage.getItem("refreshToken")
+    localStorage.getItem("refreshToken"),
   );
   const [error, setError] = useState(null); // New error state
   const navigate = useNavigate();
@@ -24,7 +24,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (username, password) => {
     try {
-      const response = await fetch("http://127.0.0.1:8000/api/users/login/", {
+      const response = await fetch(`${API_URL}/api/users/login/`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password }),
@@ -48,78 +48,76 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  // const register = async (username, password, firstName, lastName, email) => {
+  //     try {
+  //       const response = await fetch("http://127.0.0.1:8000/api/users/register/", {
+  //         method: "POST",
+  //         headers: { "Content-Type": "application/json" },
+  //         body: JSON.stringify({
+  //           username,
+  //           password,
+  //           first_name: firstName,
+  //           last_name: lastName,
+  //           email,
+  //         }),
+  //       });
+  //       const data = await response.json();
+  //       if (response.ok) {
+  //         setError(null);
+  //         navigate("/login"); // Redirect to login page on success
+  //       } else {
+  //         // If data is an object containing field errors, join them into a single string.
+  //         let errorMessage = "Registration failed";
+  //         if (typeof data === "object") {
+  //           errorMessage = Object.entries(data)
+  //             .map(([field, errors]) => `${field}: ${Array.isArray(errors) ? errors.join(", ") : errors}`)
+  //             .join(" | ");
+  //         }
+  //         setError(errorMessage);
+  //       }
+  //     } catch (err) {
+  //       setError("An error occurred during registration");
+  //     }
+  //   };
 
-// const register = async (username, password, firstName, lastName, email) => {
-//     try {
-//       const response = await fetch("http://127.0.0.1:8000/api/users/register/", {
-//         method: "POST",
-//         headers: { "Content-Type": "application/json" },
-//         body: JSON.stringify({
-//           username,
-//           password,
-//           first_name: firstName,
-//           last_name: lastName,
-//           email,
-//         }),
-//       });
-//       const data = await response.json();
-//       if (response.ok) {
-//         setError(null);
-//         navigate("/login"); // Redirect to login page on success
-//       } else {
-//         // If data is an object containing field errors, join them into a single string.
-//         let errorMessage = "Registration failed";
-//         if (typeof data === "object") {
-//           errorMessage = Object.entries(data)
-//             .map(([field, errors]) => `${field}: ${Array.isArray(errors) ? errors.join(", ") : errors}`)
-//             .join(" | ");
-//         }
-//         setError(errorMessage);
-//       }
-//     } catch (err) {
-//       setError("An error occurred during registration");
-//     }
-//   };
-  
-const register = async (username, password, firstName, lastName, email) => {
-  try {
-    const response = await fetch("http://127.0.0.1:8000/api/users/register/", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        username,
-        password,
-        first_name: firstName,
-        last_name: lastName,
-        email,
-      }),
-    });
+  const register = async (username, password, firstName, lastName, email) => {
+    try {
+      const response = await fetch(`${API_URL}/api/users/register/`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          username,
+          password,
+          first_name: firstName,
+          last_name: lastName,
+          email,
+        }),
+      });
 
-    const data = await response.json();
+      const data = await response.json();
 
-    if (response.ok) {
-      setError(null);
-      navigate("/login"); // Redirect to login page on success
-    } else {
-      // Pick the first validation error from the response
-      let errorMessage = "Registration failed";
+      if (response.ok) {
+        setError(null);
+        navigate("/login"); // Redirect to login page on success
+      } else {
+        // Pick the first validation error from the response
+        let errorMessage = "Registration failed";
 
-      if (typeof data === "object" && Object.keys(data).length > 0) {
-        const firstErrorField = Object.keys(data)[0]; // Get the first field with an error
-        const firstErrorMessage = Array.isArray(data[firstErrorField])
-          ? data[firstErrorField][0] // Get the first error message for that field
-          : data[firstErrorField];
+        if (typeof data === "object" && Object.keys(data).length > 0) {
+          const firstErrorField = Object.keys(data)[0]; // Get the first field with an error
+          const firstErrorMessage = Array.isArray(data[firstErrorField])
+            ? data[firstErrorField][0] // Get the first error message for that field
+            : data[firstErrorField];
 
-        errorMessage = `${firstErrorField}: ${firstErrorMessage}`;
+          errorMessage = `${firstErrorField}: ${firstErrorMessage}`;
+        }
+
+        setError(errorMessage);
       }
-
-      setError(errorMessage);
+    } catch (err) {
+      setError("An error occurred during registration");
     }
-  } catch (err) {
-    setError("An error occurred during registration");
-  }
-};
-
+  };
 
   const logout = () => {
     localStorage.removeItem("accessToken");
@@ -133,9 +131,10 @@ const register = async (username, password, firstName, lastName, email) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, accessToken, error, setError , login, logout, register }}>
+    <AuthContext.Provider
+      value={{ user, accessToken, error, setError, login, logout, register }}
+    >
       {children}
     </AuthContext.Provider>
   );
 };
-

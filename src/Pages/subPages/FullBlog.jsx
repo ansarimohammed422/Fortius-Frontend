@@ -3,6 +3,8 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import ReactMarkdown from "react-markdown"; // Import ReactMarkdown
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 const FullBlog = () => {
   const { id } = useParams(); // Use the blog ID from the URL
   const [blog, setBlog] = useState(null);
@@ -10,7 +12,7 @@ const FullBlog = () => {
 
   useEffect(() => {
     axios
-      .get(`http://127.0.0.1:8000/api/blogs/${id}/`)
+      .get(`${API_URL}/api/blogs/${id}/`)
       .then((response) => {
         setBlog(response.data);
         setLoading(false);

@@ -37,7 +37,7 @@
 
 //           </div>
 //         </div>
-        
+
 //       </section>
 //     </>
 //   );
@@ -55,11 +55,18 @@ const AboutHome = () => {
       <div className="container mx-auto px-6">
         {/* Header Section */}
         <div className="text-center mb-12">
-          <h2 className="text-6xl text-blue-950 font-extrabold mb-4">Why Choose Fortius?</h2>
+          <h2 className="text-6xl text-blue-950 font-extrabold mb-4">
+            Why Choose Fortius?
+          </h2>
           <p className="text-gray-900 font-medium text-lg max-w-3xl mx-auto">
-            Fortius Diagnostics is dedicated to <span className="font-bold text-teal-400">cutting-edge medical analysis</span>, 
-            ensuring accuracy, trust, and patient-first care. Our advanced facilities 
-            and expert team help deliver <span className="font-bold text-teal-400">reliable results</span> with precision.
+            Fortius Diagnostics is dedicated to{" "}
+            <span className="font-bold text-teal-400">
+              cutting-edge medical analysis
+            </span>
+            , ensuring accuracy, trust, and patient-first care. Our advanced
+            facilities and expert team help deliver{" "}
+            <span className="font-bold text-teal-400">reliable results</span>{" "}
+            with precision.
           </p>
         </div>
 
@@ -67,15 +74,21 @@ const AboutHome = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 text-center">
           <div className="bg-teal-50 shadow-lg p-6 border border-teal-400 rounded-xl hover:scale-105 transition-all ease-linear duration-300">
             <FaMicroscope className="text-blue-950 text-5xl mx-auto mb-4" />
-            <h3 className="text-lg font-semibold text-gray-900">Advanced Equipment</h3>
+            <h3 className="text-lg font-semibold text-gray-900">
+              Advanced Equipment
+            </h3>
           </div>
           <div className="bg-teal-50 shadow-lg p-6 border border-teal-400 rounded-xl hover:scale-105 transition-all ease-linear duration-300">
             <FaHeartbeat className="text-blue-950 text-5xl mx-auto mb-4" />
-            <h3 className="text-lg font-semibold text-gray-900">Comprehensive Tests</h3>
+            <h3 className="text-lg font-semibold text-gray-900">
+              Comprehensive Tests
+            </h3>
           </div>
           <div className="bg-teal-50 shadow-lg p-6 rounded-xl border border-teal-400 hover:scale-105 transition-all ease-linear duration-300">
             <FaFlask className="text-blue-950 text-5xl mx-auto mb-4" />
-            <h3 className="text-lg font-semibold text-gray-900">Precise Analysis</h3>
+            <h3 className="text-lg font-semibold text-gray-900">
+              Precise Analysis
+            </h3>
           </div>
           <div className="bg-teal-50 shadow-lg p-6 rounded-xl border border-teal-400 hover:scale-105 transition-all ease-linear duration-300">
             <FaUserMd className="text-blue-950 text-5xl mx-auto mb-4" />
@@ -85,9 +98,9 @@ const AboutHome = () => {
 
         {/* Call to Action Button */}
         <div className="flex justify-center mt-10">
-          <MyLinks 
+          <MyLinks
             path="/About"
-            LName="Learn More" 
+            LName="Learn More"
             customClass="bg-teal-400 px-6 py-3 rounded-xl !text-blue-950 font-black hover:bg-blue-950 hover:!text-teal-400 transition-all ease-linear duration-300"
           />
         </div>
@@ -97,4 +110,3 @@ const AboutHome = () => {
 };
 
 export default AboutHome;
-

@@ -3,6 +3,7 @@ import axios from "axios";
 import { motion, AnimatePresence } from "framer-motion";
 import { MyLinks } from "./Button";
 
+const API_URL = import.meta.env.VITE_API_URL;
 // Function to generate a random solid color
 const generateRandomColor = () => {
   const colors = [
@@ -23,7 +24,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     axios
-      .get("http://127.0.0.1:8000/api/dashboard/")
+      .get(`${API_URL}/api/dashboard/`)
       .then((response) => setStats(response.data))
       .catch((error) => console.error("Error fetching dashboard data:", error));
   }, []);
@@ -31,14 +32,59 @@ const Dashboard = () => {
   // Data array for rotating items
   const data = stats
     ? [
-      { title: "Total Categories", value: stats.total_categories, info: <span className="text-xl">{ "Categories of diagnostic tests available." }</span> },
-      { title: "Total Tests", value: stats.total_tests, info: <span className="text-xl">{ "Total number of tests performed at Fortius." }</span> },
-      { title: "Total Appointments", value: stats.total_appointments, info: <span className="text-xl">{ "Appointments booked at Fortius Diagnostics." }</span> },
-      { title: "Approved Appointments", value: stats.total_approved_appointments, info: <span className="text-xl">{ "Appointments that have been approved." }</span> },
-      { title: "Approval Rate", value: `${stats.approval_rate}%`, info: <span className="text-xl">{ "Percentage of approved appointments." }</span> },
-      { title: "Test Completion Rate", value: `${stats.test_completion_rate}%`, info: <span className="text-xl">{ "Percentage of completed tests." }</span> },
-    ]
-    
+        {
+          title: "Total Categories",
+          value: stats.total_categories,
+          info: (
+            <span className="text-xl">
+              {"Categories of diagnostic tests available."}
+            </span>
+          ),
+        },
+        {
+          title: "Total Tests",
+          value: stats.total_tests,
+          info: (
+            <span className="text-xl">
+              {"Total number of tests performed at Fortius."}
+            </span>
+          ),
+        },
+        {
+          title: "Total Appointments",
+          value: stats.total_appointments,
+          info: (
+            <span className="text-xl">
+              {"Appointments booked at Fortius Diagnostics."}
+            </span>
+          ),
+        },
+        {
+          title: "Approved Appointments",
+          value: stats.total_approved_appointments,
+          info: (
+            <span className="text-xl">
+              {"Appointments that have been approved."}
+            </span>
+          ),
+        },
+        {
+          title: "Approval Rate",
+          value: `${stats.approval_rate}%`,
+          info: (
+            <span className="text-xl">
+              {"Percentage of approved appointments."}
+            </span>
+          ),
+        },
+        {
+          title: "Test Completion Rate",
+          value: `${stats.test_completion_rate}%`,
+          info: (
+            <span className="text-xl">{"Percentage of completed tests."}</span>
+          ),
+        },
+      ]
     : [];
 
   useEffect(() => {
@@ -61,14 +107,18 @@ const Dashboard = () => {
     <section className="py-12 bg-white" id="Dashboard">
       <div className="container mx-auto px-4">
         <div className="text-center mb-8">
-          <h2 className="text-4xl text-blue-950 font-extrabold mb-4">Dashboard Overview</h2>
+          <h2 className="text-4xl text-blue-950 font-extrabold mb-4">
+            Dashboard Overview
+          </h2>
           <p className="text-gray-800 font-semibold text-lg">
             Get real-time insights into Fortius Diagnostics' key metrics.
           </p>
         </div>
 
         {/* Carousel Wrapper */}
-        <div className="flex justify-center items-center"> {/* Centering the cards */}
+        <div className="flex justify-center items-center">
+          {" "}
+          {/* Centering the cards */}
           <AnimatePresence mode="wait">
             {data.length > 0 && (
               <motion.div
@@ -113,7 +163,8 @@ const DashboardCard = ({ title, value, info, color }) => {
         }}
       >
         {value}
-      </p> {/* Solid color applied here */}
+      </p>{" "}
+      {/* Solid color applied here */}
       <p className="text-gray-600 mt-2 text-2xl">{info}</p>
     </div>
   );

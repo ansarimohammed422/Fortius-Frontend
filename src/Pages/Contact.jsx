@@ -3,6 +3,8 @@ import Button from "../Components/Button";
 import { useState } from "react";
 import axios from "axios";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 const Contact = () => {
   const [formData, setFormData] = useState({
     name: "",
@@ -21,21 +23,15 @@ const Contact = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post(
-        "http://127.0.0.1:8000/api/contact/",
-        formData,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const response = await axios.post(`${API_URL}/api/contact/`, formData, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
       if (response.status === 201) {
-        
-          setResponseMessage("Form submitted successfully!");
-    
-          
+        setResponseMessage("Form submitted successfully!");
+
         setFormData({
           name: "",
           email: "",
@@ -43,8 +39,7 @@ const Contact = () => {
           message: "",
         });
       } else {
-          setResponseMessage("Something went wrong. Please try again.");
-
+        setResponseMessage("Something went wrong. Please try again.");
       }
     } catch (error) {
       console.error("Error submitting form:", error);
@@ -220,7 +215,6 @@ const Contact = () => {
                       />
                     </svg>
                   </a>
-
                 </div>
               </div>
             </div>
@@ -297,20 +291,19 @@ const Contact = () => {
                 </div>
 
                 {responseMessage && (
-              <div
-                className={`mt-4 p-4 rounded-lg text-center ${
-                  responseMessage.includes("successfully")
-                    ? "bg-transparent text-blue-950 border border-blue-950"
-                    : "bg-red-600/30    text-red-700 border border-red-950"
-                }`}
-              >
-                {responseMessage}
-              </div>
-            )}
+                  <div
+                    className={`mt-4 p-4 rounded-lg text-center ${
+                      responseMessage.includes("successfully")
+                        ? "bg-transparent text-blue-950 border border-blue-950"
+                        : "bg-red-600/30    text-red-700 border border-red-950"
+                    }`}
+                  >
+                    {responseMessage}
+                  </div>
+                )}
               </form>
 
               {/* Display Response Message */}
-            
             </div>
           </div>
         </div>

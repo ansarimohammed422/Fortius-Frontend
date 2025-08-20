@@ -76,10 +76,10 @@
 //   );
 // }
 
-
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+const API_URL = import.meta.env.VITE_API_URL;
 
 export default function SendResetEmail() {
   const [email, setEmail] = useState("");
@@ -93,9 +93,11 @@ export default function SendResetEmail() {
     setMsg("");
 
     try {
-      const res = await axios.post("http://localhost:8000/api/send-reset-email/", { email });
+      const res = await axios.post(`${API_URL}/api/send-reset-email/`, {
+        email,
+      });
       setMsg(res.data.message || "✅ Reset link sent to your email.");
-      
+
       // ✅ Redirect to login page after 3 seconds
       setTimeout(() => {
         navigate("/login");
@@ -110,7 +112,9 @@ export default function SendResetEmail() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-[url('./assets/New_teal.jpg')] bg-center bg-cover p-4">
       <div className="bg-teal-400/50 backdrop-blur-md shadow-2xl rounded-2xl p-10 w-full max-w-lg border border-blue-950">
-        <h2 className="text-4xl font-semibold text-blue-950 text-center mb-6">Forgot Password?</h2>
+        <h2 className="text-4xl font-semibold text-blue-950 text-center mb-6">
+          Forgot Password?
+        </h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <input
             type="email"
@@ -130,7 +134,10 @@ export default function SendResetEmail() {
 
         {msg && (
           <p className="text-center mt-4 text-white/90">
-            {msg} <br /> <span className="text-sm text-blue-200">(Redirecting to login...)</span>
+            {msg} <br />{" "}
+            <span className="text-sm text-blue-200">
+              (Redirecting to login...)
+            </span>
           </p>
         )}
       </div>

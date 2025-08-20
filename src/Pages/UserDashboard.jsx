@@ -8,6 +8,8 @@ import UserMembershipStatus from "../Components/UserMembershipStatus";
 import { FaFileInvoice, FaRegCalendarCheck, FaTimes } from "react-icons/fa"; // Import icons from react-icons
 import { MyLinks } from "../Components/Button";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 const UserDashboard = () => {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -19,111 +21,123 @@ const UserDashboard = () => {
   const [rescheduleData, setRescheduleData] = useState(null);
   const [searchQuery, setSearchQuery] = useState(""); // State for search query
   const [showFilterDropdown, setShowFilterDropdown] = useState(false); // State for filter dropdown visibility
-  const [filterStatus, setFilterStatus] = useState('all'); // 'all', 'cancelled', 'not_cancelled'
-  const [filterDate, setFilterDate] = useState('');
-  const [filterTime, setFilterTime] = useState('');
+  const [filterStatus, setFilterStatus] = useState("all"); // 'all', 'cancelled', 'not_cancelled'
+  const [filterDate, setFilterDate] = useState("");
+  const [filterTime, setFilterTime] = useState("");
 
-  const filteredAppointments = appointments.filter(appointment => {
+  const filteredAppointments = appointments.filter((appointment) => {
     const query = searchQuery.toLowerCase();
     const dateMatch = appointment.date.toLowerCase().includes(query);
     const timeMatch = appointment.time.toLowerCase().includes(query);
     const testsMatch = Array.isArray(appointment.tests)
-      ? appointment.tests.some(test => test.name.toLowerCase().includes(query))
+      ? appointment.tests.some((test) =>
+          test.name.toLowerCase().includes(query),
+        )
       : appointment.tests.toString().toLowerCase().includes(query);
 
     // New filter conditions
-    const statusFilterPasses = filterStatus === 'all' ||
-                               (filterStatus === 'cancelled' && appointment.is_cancelled) ||
-                               (filterStatus === 'not_cancelled' && !appointment.is_cancelled);
+    const statusFilterPasses =
+      filterStatus === "all" ||
+      (filterStatus === "cancelled" && appointment.is_cancelled) ||
+      (filterStatus === "not_cancelled" && !appointment.is_cancelled);
 
-    const dateFilterPasses = filterDate === '' || appointment.date === filterDate;
+    const dateFilterPasses =
+      filterDate === "" || appointment.date === filterDate;
 
-    const timeFilterPasses = filterTime === '' || (appointment.time && appointment.time.startsWith(filterTime)); // Use startsWith for partial time matching if needed, or strict equality
+    const timeFilterPasses =
+      filterTime === "" ||
+      (appointment.time && appointment.time.startsWith(filterTime)); // Use startsWith for partial time matching if needed, or strict equality
 
-    return (dateMatch || timeMatch || testsMatch) && statusFilterPasses && dateFilterPasses && timeFilterPasses;
+    return (
+      (dateMatch || timeMatch || testsMatch) &&
+      statusFilterPasses &&
+      dateFilterPasses &&
+      timeFilterPasses
+    );
   });
 
-  const appointmentListContent = filteredAppointments.length > 0 ? (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {filteredAppointments.map((appointment) => (
-        <div
-          key={appointment.id}
-          className="bg-white p-4 rounded-lg shadow border border-blue-950"
-        >
-          <div className="mb-3 pb-2 border-b border-gray-200">
-            <p className="text-sm text-gray-600">
-              Date:{" "}
-              <span className="font-semibold text-blue-950">
-                {appointment.date}
-              </span>
-            </p>
-            <p className="text-sm text-gray-600">
-              Time:{" "}
-              <span className="font-semibold text-blue-950">
-                {appointment.time}
-              </span>
-            </p>
+  const appointmentListContent =
+    filteredAppointments.length > 0 ? (
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {filteredAppointments.map((appointment) => (
+          <div
+            key={appointment.id}
+            className="bg-white p-4 rounded-lg shadow border border-blue-950"
+          >
+            <div className="mb-3 pb-2 border-b border-gray-200">
+              <p className="text-sm text-gray-600">
+                Date:{" "}
+                <span className="font-semibold text-blue-950">
+                  {appointment.date}
+                </span>
+              </p>
+              <p className="text-sm text-gray-600">
+                Time:{" "}
+                <span className="font-semibold text-blue-950">
+                  {appointment.time}
+                </span>
+              </p>
+            </div>
+
+            <div className="mb-4">
+              <p className="text-sm text-gray-600 mb-1">Tests:</p>
+              <ul className="list-disc ml-4 text-blue-950">
+                {Array.isArray(appointment.tests) ? (
+                  appointment.tests.map((test, index) => (
+                    <li key={index} className="text-sm">
+                      {test.name} - ₹{test.price}
+                    </li>
+                  ))
+                ) : (
+                  <li className="text-sm">{appointment.tests}</li>
+                )}
+              </ul>
+            </div>
+
+            <div className="flex flex-col space-y-2">
+              <button
+                onClick={() => handleBillingClick(appointment.id)}
+                className="bg-blue-950 text-teal-400 hover:bg-teal-400 hover:text-blue-950 transition-all duration-300 px-4 py-2 rounded-lg w-full flex items-center justify-center font-semibold"
+              >
+                <FaFileInvoice className="mr-2" /> View Bill
+              </button>
+
+              <button
+                onClick={() => handleCancel(appointment.id)}
+                className={`${
+                  appointment.is_cancelled
+                    ? "bg-gray-400 text-blue-950 cursor-not-allowed"
+                    : "bg-red-600 text-teal-400 hover:bg-red-700"
+                } px-4 py-2 rounded-lg transition-all duration-300 w-full flex items-center justify-center font-semibold`}
+                disabled={appointment.is_cancelled}
+              >
+                <FaTimes className="mr-2" />{" "}
+                {appointment.is_cancelled ? "Cancelled" : "Cancel"}
+              </button>
+
+              <button
+                onClick={() => openRescheduleModal(appointment)}
+                className="bg-yellow-500 text-blue-950 hover:bg-yellow-600 transition-all duration-300 px-4 py-2 rounded-lg w-full flex items-center justify-center font-semibold"
+              >
+                <FaRegCalendarCheck className="mr-2" /> Reschedule
+              </button>
+            </div>
           </div>
-
-          <div className="mb-4">
-            <p className="text-sm text-gray-600 mb-1">Tests:</p>
-            <ul className="list-disc ml-4 text-blue-950">
-              {Array.isArray(appointment.tests) ? (
-                appointment.tests.map((test, index) => (
-                  <li key={index} className="text-sm">
-                    {test.name} - ₹{test.price}
-                  </li>
-                ))
-              ) : (
-                <li className="text-sm">{appointment.tests}</li>
-              )}
-            </ul>
-          </div>
-
-          <div className="flex flex-col space-y-2">
-            <button
-              onClick={() => handleBillingClick(appointment.id)}
-              className="bg-blue-950 text-teal-400 hover:bg-teal-400 hover:text-blue-950 transition-all duration-300 px-4 py-2 rounded-lg w-full flex items-center justify-center font-semibold"
-            >
-              <FaFileInvoice className="mr-2" /> View Bill
-            </button>
-
-            <button
-              onClick={() => handleCancel(appointment.id)}
-              className={`${
-                appointment.is_cancelled
-                  ? "bg-gray-400 text-blue-950 cursor-not-allowed"
-                  : "bg-red-600 text-teal-400 hover:bg-red-700"
-              } px-4 py-2 rounded-lg transition-all duration-300 w-full flex items-center justify-center font-semibold`}
-              disabled={appointment.is_cancelled}
-            >
-              <FaTimes className="mr-2" />{" "}
-              {appointment.is_cancelled ? "Cancelled" : "Cancel"}
-            </button>
-
-            <button
-              onClick={() => openRescheduleModal(appointment)}
-              className="bg-yellow-500 text-blue-950 hover:bg-yellow-600 transition-all duration-300 px-4 py-2 rounded-lg w-full flex items-center justify-center font-semibold"
-            >
-              <FaRegCalendarCheck className="mr-2" /> Reschedule
-            </button>
-          </div>
-        </div>
-      ))}
-    </div>
-  ) : (
-    <p className="text-center text-blue-950">No appointments found.</p>
-  );
+        ))}
+      </div>
+    ) : (
+      <p className="text-center text-blue-950">No appointments found.</p>
+    );
 
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
         const token = localStorage.getItem("accessToken");
         const response = await axios.get(
-          "http://127.0.0.1:8000/api/users/userappointments/",
+          `${API_URL}/api/users/userappointments/`,
           {
             headers: { Authorization: `Bearer ${token}` },
-          }
+          },
         );
 
         setAppointments(response.data);
@@ -151,7 +165,7 @@ const UserDashboard = () => {
   const handleBillingClick = async (appointmentId) => {
     try {
       const response = await axios.get(
-        `http://127.0.0.1:8000/api/billing/${appointmentId}/`
+        `${API_URL}/api/billing/${appointmentId}/`,
       );
       if (response.status === 200) {
         navigate(`/billing/${appointmentId}`, { state: { validAccess: true } }); // Redirect to billing page
@@ -166,18 +180,18 @@ const UserDashboard = () => {
     try {
       const token = localStorage.getItem("accessToken");
       await axios.patch(
-        `http://127.0.0.1:8000/api/appointments/${appointmentId}/cancel/`,
+        `${API_URL}/api/appointments/${appointmentId}/cancel/`,
         {},
         {
           headers: { Authorization: `Bearer ${token}` },
-        }
+        },
       );
 
       setAlertMessage("Appointment cancelled successfully.");
       setAppointments((prev) =>
         prev.map((a) =>
-          a.id === appointmentId ? { ...a, status: "cancelled" } : a
-        )
+          a.id === appointmentId ? { ...a, status: "cancelled" } : a,
+        ),
       );
     } catch (error) {
       console.error("Cancel error:", error);
@@ -201,30 +215,30 @@ const UserDashboard = () => {
       console.log("Sending:", { new_date: date, new_time: time });
 
       await axios.post(
-        `http://127.0.0.1:8000/api/appointments/${id}/reschedule/`,
+        `${API_URL}/api/appointments/${id}/reschedule/`,
         {
           new_date: date,
           new_time: time,
         },
         {
           headers: { Authorization: `Bearer ${token}` },
-        }
+        },
       );
 
       setAlertMessage("Appointment rescheduled successfully.");
       setRescheduleData(null);
 
       const updated = await axios.get(
-        "http://127.0.0.1:8000/api/users/userappointments/",
+        `${API_URL}/api/users/userappointments/`,
         {
           headers: { Authorization: `Bearer ${token}` },
-        }
+        },
       );
       setAppointments(updated.data);
     } catch (error) {
       console.error(
         "Reschedule failed:",
-        error.response?.data || error.message
+        error.response?.data || error.message,
       );
       setAlertMessage("Failed to reschedule appointment.");
     }
@@ -313,7 +327,9 @@ const UserDashboard = () => {
             <div className="bg-teal-100 p-4 rounded-lg mb-6 grid grid-cols-1 md:grid-cols-3 gap-4">
               {/* Status Filter */}
               <div>
-                <label className="block text-sm font-medium text-blue-950 mb-1">Status:</label>
+                <label className="block text-sm font-medium text-blue-950 mb-1">
+                  Status:
+                </label>
                 <select
                   value={filterStatus}
                   onChange={(e) => setFilterStatus(e.target.value)}
@@ -327,7 +343,9 @@ const UserDashboard = () => {
 
               {/* Date Filter */}
               <div>
-                 <label className="block text-sm font-medium text-blue-950 mb-1">Date:</label>
+                <label className="block text-sm font-medium text-blue-950 mb-1">
+                  Date:
+                </label>
                 <input
                   type="date"
                   value={filterDate}
@@ -338,20 +356,22 @@ const UserDashboard = () => {
 
               {/* Time Filter */}
               <div>
-                 <label className="block text-sm font-medium text-blue-950 mb-1">Time:</label>
-                  <input
-                    type="time"
-                    value={filterTime}
-                    onChange={(e) => setFilterTime(e.target.value)}
-                    className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-400 text-blue-950"
-                  />
-                </div>
+                <label className="block text-sm font-medium text-blue-950 mb-1">
+                  Time:
+                </label>
+                <input
+                  type="time"
+                  value={filterTime}
+                  onChange={(e) => setFilterTime(e.target.value)}
+                  className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-400 text-blue-950"
+                />
               </div>
-            )}
+            </div>
+          )}
 
-            <h3 className="text-3xl font-bold text-center text-blue-950 mb-6">
-              Your Appointments
-            </h3>
+          <h3 className="text-3xl font-bold text-center text-blue-950 mb-6">
+            Your Appointments
+          </h3>
 
           {appointmentListContent}
         </div>
