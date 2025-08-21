@@ -158,7 +158,7 @@ const SearchBar = (props) => {
                 <span className="text-blue-950 font-bold">Total Price:</span>
                 <span className="font-bold drop-shadow-2xl">
                   {" "}
-                  Rs.{props.offerPrice && total_price}
+                  Rs.{props.offerPrice ?? total_price}
                 </span>
               </div>
               <div>
@@ -166,9 +166,7 @@ const SearchBar = (props) => {
                 <span className="font-bold drop-shadow-2xl">
                   {" "}
                   Rs.
-                  {offerPrice !== undefined && offerPrice !== null
-                    ? offerPrice
-                    : null}
+                  {offerPrice && offerPrice !== totalPrice ? offerPrice : null}
                 </span>
               </div>
             </h1>
