@@ -162,7 +162,7 @@ const Navbar = (props) => {
           customClass={`flex items-center gap-1 ${
             isScrolled
               ? "px-4 py-2 rounded-lg"
-              : "!text-blue-950  hover:shadow-blue-950 hover:shadow-inner px-4 py-2 rounded-lg "
+              : "!text-blue-950   hover:shadow-blue-950 hover:shadow-inner px-4 py-2 rounded-lg "
           }  `}
         />
 

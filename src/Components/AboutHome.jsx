@@ -45,20 +45,86 @@
 
 // export default AboutHome;
 
+// import React from "react";
+// import { MyLinks } from "./Button";
+// import { FaMicroscope, FaHeartbeat, FaFlask, FaUserMd } from "react-icons/fa";
+
+// const AboutHome = () => {
+//   return (
+//     <section className="py-16 scroll-mt-96 bg-white" id="About">
+//       <div className="container mx-auto px-6">
+//         {/* Header Section */}
+//         <div className="text-center mb-12">
+//           <h2 className="text-6xl text-blue-950 font-extrabold mb-4">
+//             Why Choose Fortius?
+//           </h2>
+//           <p className="text-gray-900 font-medium text-lg max-w-3xl mx-auto">
+//             Fortius Diagnostics is dedicated to{" "}
+//             <span className="font-bold text-teal-400">
+//               cutting-edge medical analysis
+//             </span>
+//             , ensuring accuracy, trust, and patient-first care. Our advanced
+//             facilities and expert team help deliver{" "}
+//             <span className="font-bold text-teal-400">reliable results</span>{" "}
+//             with precision.
+//           </p>
+//         </div>
+
+//         {/* Features Section */}
+//         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 text-center">
+//           <div className="bg-teal-50 shadow-lg p-6 border border-teal-400 rounded-xl hover:scale-105 transition-all ease-linear duration-300">
+//             <FaMicroscope className="text-blue-950 text-5xl mx-auto mb-4" />
+//             <h3 className="text-lg font-semibold text-gray-900">
+//               Advanced Equipment
+//             </h3>
+//           </div>
+//           <div className="bg-teal-50 shadow-lg p-6 border border-teal-400 rounded-xl hover:scale-105 transition-all ease-linear duration-300">
+//             <FaHeartbeat className="text-blue-950 text-5xl mx-auto mb-4" />
+//             <h3 className="text-lg font-semibold text-gray-900">
+//               Comprehensive Tests
+//             </h3>
+//           </div>
+//           <div className="bg-teal-50 shadow-lg p-6 rounded-xl border border-teal-400 hover:scale-105 transition-all ease-linear duration-300">
+//             <FaFlask className="text-blue-950 text-5xl mx-auto mb-4" />
+//             <h3 className="text-lg font-semibold text-gray-900">
+//               Precise Analysis
+//             </h3>
+//           </div>
+//           <div className="bg-teal-50 shadow-lg p-6 rounded-xl border border-teal-400 hover:scale-105 transition-all ease-linear duration-300">
+//             <FaUserMd className="text-blue-950 text-5xl mx-auto mb-4" />
+//             <h3 className="text-lg font-semibold text-gray-900">Expert Team</h3>
+//           </div>
+//         </div>
+
+//         {/* Call to Action Button */}
+//         <div className="flex justify-center mt-10">
+//           <MyLinks
+//             path="/About"
+//             LName="Learn More"
+//             customClass="bg-teal-400 px-6 py-3 rounded-xl !text-blue-950 font-black hover:bg-blue-950 hover:!text-teal-400 transition-all ease-linear duration-300"
+//           />
+//         </div>
+//       </div>
+//     </section>
+//   );
+// };
+
+// export default AboutHome;
+
 import React from "react";
 import { MyLinks } from "./Button";
 import { FaMicroscope, FaHeartbeat, FaFlask, FaUserMd } from "react-icons/fa";
 
 const AboutHome = () => {
   return (
-    <section className="py-16 scroll-mt-96 bg-white" id="About">
-      <div className="container mx-auto px-6">
+    <section className="py-12 md:py-16 scroll-mt-96 bg-white" id="About">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header Section */}
-        <div className="text-center mb-12">
-          <h2 className="text-6xl text-blue-950 font-extrabold mb-4">
+        <div className="text-center mb-10 md:mb-12">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-blue-950 font-extrabold mb-4">
             Why Choose Fortius?
           </h2>
-          <p className="text-gray-900 font-medium text-lg max-w-3xl mx-auto">
+          <p className="text-gray-900 font-medium text-sm sm:text-base md:text-lg max-w-xl sm:max-w-2xl md:max-w-3xl mx-auto">
             Fortius Diagnostics is dedicated to{" "}
             <span className="font-bold text-teal-400">
               cutting-edge medical analysis
@@ -71,37 +137,39 @@ const AboutHome = () => {
         </div>
 
         {/* Features Section */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 text-center">
-          <div className="bg-teal-50 shadow-lg p-6 border border-teal-400 rounded-xl hover:scale-105 transition-all ease-linear duration-300">
-            <FaMicroscope className="text-blue-950 text-5xl mx-auto mb-4" />
-            <h3 className="text-lg font-semibold text-gray-900">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 text-center">
+          <div className="bg-teal-50 shadow-lg p-4 sm:p-6 border border-teal-400 rounded-xl hover:scale-105 transition-all ease-linear duration-300">
+            <FaMicroscope className="text-blue-950 text-4xl sm:text-5xl mx-auto mb-3 sm:mb-4" />
+            <h3 className="text-base sm:text-lg md:text-lg font-semibold text-gray-900">
               Advanced Equipment
             </h3>
           </div>
-          <div className="bg-teal-50 shadow-lg p-6 border border-teal-400 rounded-xl hover:scale-105 transition-all ease-linear duration-300">
-            <FaHeartbeat className="text-blue-950 text-5xl mx-auto mb-4" />
-            <h3 className="text-lg font-semibold text-gray-900">
+          <div className="bg-teal-50 shadow-lg p-4 sm:p-6 border border-teal-400 rounded-xl hover:scale-105 transition-all ease-linear duration-300">
+            <FaHeartbeat className="text-blue-950 text-4xl sm:text-5xl mx-auto mb-3 sm:mb-4" />
+            <h3 className="text-base sm:text-lg md:text-lg font-semibold text-gray-900">
               Comprehensive Tests
             </h3>
           </div>
-          <div className="bg-teal-50 shadow-lg p-6 rounded-xl border border-teal-400 hover:scale-105 transition-all ease-linear duration-300">
-            <FaFlask className="text-blue-950 text-5xl mx-auto mb-4" />
-            <h3 className="text-lg font-semibold text-gray-900">
+          <div className="bg-teal-50 shadow-lg p-4 sm:p-6 border border-teal-400 rounded-xl hover:scale-105 transition-all ease-linear duration-300">
+            <FaFlask className="text-blue-950 text-4xl sm:text-5xl mx-auto mb-3 sm:mb-4" />
+            <h3 className="text-base sm:text-lg md:text-lg font-semibold text-gray-900">
               Precise Analysis
             </h3>
           </div>
-          <div className="bg-teal-50 shadow-lg p-6 rounded-xl border border-teal-400 hover:scale-105 transition-all ease-linear duration-300">
-            <FaUserMd className="text-blue-950 text-5xl mx-auto mb-4" />
-            <h3 className="text-lg font-semibold text-gray-900">Expert Team</h3>
+          <div className="bg-teal-50 shadow-lg p-4 sm:p-6 border border-teal-400 rounded-xl hover:scale-105 transition-all ease-linear duration-300">
+            <FaUserMd className="text-blue-950 text-4xl sm:text-5xl mx-auto mb-3 sm:mb-4" />
+            <h3 className="text-base sm:text-lg md:text-lg font-semibold text-gray-900">
+              Expert Team
+            </h3>
           </div>
         </div>
 
         {/* Call to Action Button */}
-        <div className="flex justify-center mt-10">
+        <div className="flex justify-center mt-8 sm:mt-10">
           <MyLinks
             path="/About"
             LName="Learn More"
-            customClass="bg-teal-400 px-6 py-3 rounded-xl !text-blue-950 font-black hover:bg-blue-950 hover:!text-teal-400 transition-all ease-linear duration-300"
+            customClass="bg-teal-400 px-4 sm:px-6 py-2 sm:py-3 rounded-xl !text-blue-950 font-black hover:bg-blue-950 hover:!text-teal-400 transition-all ease-linear duration-300"
           />
         </div>
       </div>
