@@ -166,7 +166,7 @@ const SearchBar = (props) => {
                 <span className="font-bold drop-shadow-2xl">
                   {" "}
                   Rs.
-                  {offerPrice && offerPrice !== total_Price ? offerPrice : null}
+                  {offerPrice && offerPrice !== total_price ? offerPrice : null}
                 </span>
               </div>
             </h1>
