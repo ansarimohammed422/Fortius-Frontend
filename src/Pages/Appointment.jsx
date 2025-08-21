@@ -85,7 +85,7 @@ const Appointment = () => {
     const cachedTests = localStorage.getItem("cachedTests");
     if (cachedTests) {
       setTests(JSON.parse(cachedTests));
-      return; // ✅ Stop here, don't fetch again
+      return; // ✅ Stop here, no need to fetch again
     }
 
     const fetchTests = async () => {
@@ -93,7 +93,9 @@ const Appointment = () => {
         const token = localStorage.getItem("accessToken");
         const headers = token ? { Authorization: `Bearer ${token}` } : {}; // No auth for guests
 
-        const { data } = await axios.get(`${API_URL}/api/tests/`, { headers });
+        const { data } = await axios.get(`${API_URL}/api/tests/`, {
+          headers,
+        });
 
         setTests(data); // update state
         localStorage.setItem("cachedTests", JSON.stringify(data)); // update cache
@@ -103,7 +105,7 @@ const Appointment = () => {
     };
 
     fetchTests(); // Only fetch if no cache
-  }, []);
+  }, [location, navigate]);
 
   // const handleSubmit = async () => {
   //   if (inputtags.Phone.length < 10) {
