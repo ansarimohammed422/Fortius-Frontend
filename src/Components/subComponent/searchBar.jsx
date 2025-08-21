@@ -33,7 +33,7 @@ const SearchBar = (props) => {
   const handleFocus = () => {
     setShowAll(true);
     setSuggestions(props.alltests);
-    console.log(props.offerPrice);
+    console.log("PkgPrice:-" + props.offerPrice);
   };
 
   const handleBlur = () => {
