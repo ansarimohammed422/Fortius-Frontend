@@ -141,6 +141,7 @@ const Appointment = () => {
     // 🧹 Cleanup function → clear cache on unmount
     return () => {
       localStorage.removeItem("cachedTests");
+      console.log("Cache cleared on unmount ✅");
     };
   }, [location, navigate]);
 
