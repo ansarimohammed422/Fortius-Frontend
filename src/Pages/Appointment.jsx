@@ -39,6 +39,40 @@ const Appointment = () => {
   const [alertType, setAlertType] = useState("");
   const [PhoneError, setPhoneError] = useState(false);
 
+  // useEffect(() => {
+  //   const newOffer = location.state?.offerPrice || null;
+  //   setOfferPrice(newOffer);
+
+  //   if (location.state?.selectedTestIds || location.state?.offerPrice) {
+  //     navigate(location.pathname, { replace: true, state: {} });
+  //   }
+
+  //   // ⏱ Load cached tests first (fast UI)
+  //   const cachedTests = localStorage.getItem("cachedTests");
+  //   if (cachedTests) {
+  //     setTests(JSON.parse(cachedTests));
+  //   }
+
+  //   const fetchTests = async () => {
+  //     try {
+  //       const token = localStorage.getItem("accessToken");
+
+  //       const headers = token ? { Authorization: `Bearer ${token}` } : {}; // No auth for guests
+
+  //       const { data } = await axios.get(`${API_URL}/api/tests/`, {
+  //         headers,
+  //       });
+
+  //       setTests(data); // update state
+  //       localStorage.setItem("cachedTests", JSON.stringify(data)); // update cache
+  //     } catch (error) {
+  //       console.error("Error fetching tests:", error);
+  //     }
+  //   };
+
+  //   fetchTests(); // Always fetch fresh in background
+  // }, []);
+
   useEffect(() => {
     const newOffer = location.state?.offerPrice || null;
     setOfferPrice(newOffer);
@@ -51,30 +85,15 @@ const Appointment = () => {
     const cachedTests = localStorage.getItem("cachedTests");
     if (cachedTests) {
       setTests(JSON.parse(cachedTests));
+      return; // ✅ Stop here, don't fetch again
     }
 
-    // 🌐 Fetch fresh tests from API
-    // const fetchTests = async () => {
-    //   try {
-    //     const token = localStorage.getItem("accessToken");
-    //     const { data } = await axios.get("http://127.0.0.1:8000/api/tests/", {
-    //       headers: { Authorization: `Bearer ${token}` },
-    //     });
-    //     setTests(data); // update state
-    //     localStorage.setItem("cachedTests", JSON.stringify(data)); // update cache
-    //   } catch (error) {
-    //     console.error("Error fetching tests:", error);
-    //   }
-    // };
     const fetchTests = async () => {
       try {
         const token = localStorage.getItem("accessToken");
-
         const headers = token ? { Authorization: `Bearer ${token}` } : {}; // No auth for guests
 
-        const { data } = await axios.get(`${API_URL}/api/tests/`, {
-          headers,
-        });
+        const { data } = await axios.get(`${API_URL}/api/tests/`, { headers });
 
         setTests(data); // update state
         localStorage.setItem("cachedTests", JSON.stringify(data)); // update cache
@@ -83,7 +102,7 @@ const Appointment = () => {
       }
     };
 
-    fetchTests(); // Always fetch fresh in background
+    fetchTests(); // Only fetch if no cache
   }, []);
 
   // const handleSubmit = async () => {
