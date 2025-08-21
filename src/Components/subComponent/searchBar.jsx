@@ -35,7 +35,6 @@ const SearchBar = (props) => {
     setSuggestions(props.alltests);
     console.log("PkgPrice:-" + props.offerPrice);
   };
-
   const handleBlur = () => {
     setTimeout(() => {
       setShowAll(false);
