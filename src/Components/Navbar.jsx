@@ -154,39 +154,43 @@ const Navbar = (props) => {
           </svg>
         </Link>
       </div>
-      <div className="mx-10  hidden gap-4 items-center sm:flex">
-        <MyLinks
-          path="/"
-          LName="Home"
-          LIcon={<MdHome size={32} />}
-          customClass={`flex items-center gap-1 ${
-            isScrolled
-              ? "px-4 py-2 rounded-lg"
-              : "!text-blue-950   hover:shadow-blue-950 hover:shadow-inner px-4 py-2 rounded-lg "
-          }  `}
-        />
+      <div className="mx-10 gap-4 items-center flex">
+        <div className="hidden sm:flex gap-4 items-center">
+          <MyLinks
+            path="/"
+            LName="Home"
+            LIcon={<MdHome size={32} />}
+            customClass={`flex items-center gap-1 ${
+              isScrolled
+                ? "px-4 py-2 rounded-lg"
+                : "!text-blue-950   hover:shadow-blue-950 hover:shadow-inner px-4 py-2 rounded-lg "
+            }  `}
+          />
 
-        <MyLinks
-          path="/Contact"
-          LName="Contact Us"
-          LIcon={<MdPermContactCalendar size={32} />}
-          customClass={`flex items-cenetr gap-1 ${
-            isScrolled
-              ? "px-4 py-2 rounded-lg"
-              : "!text-blue-950  hover:shadow-blue-950 hover:shadow-inner px-4 py-2 rounded-lg"
-          }  `}
-        />
-        <MyLinks
-          path="/About"
-          LName="About Us"
-          LIcon={<BsFillPatchExclamationFill size={28} />}
-          customClass={`flex items-center gap-1 ${
-            isScrolled
-              ? "px-4 py-2 rounded-lg"
-              : "!text-blue-950  hover:shadow-blue-950 hover:shadow-inner px-4 py-2 rounded-lg"
-          }  `}
-        />
-        <ProfileDropdown />
+          <MyLinks
+            path="/Contact"
+            LName="Contact Us"
+            LIcon={<MdPermContactCalendar size={32} />}
+            customClass={`flex items-cenetr gap-1 ${
+              isScrolled
+                ? "px-4 py-2 rounded-lg"
+                : "!text-blue-950  hover:shadow-blue-950 hover:shadow-inner px-4 py-2 rounded-lg"
+            }  `}
+          />
+          <MyLinks
+            path="/About"
+            LName="About Us"
+            LIcon={<BsFillPatchExclamationFill size={28} />}
+            customClass={`flex items-center gap-1 ${
+              isScrolled
+                ? "px-4 py-2 rounded-lg"
+                : "!text-blue-950  hover:shadow-blue-950 hover:shadow-inner px-4 py-2 rounded-lg"
+            }  `}
+          />
+        </div>
+        <div className="flex items-center">
+          <ProfileDropdown />
+        </div>
       </div>
     </nav>
   );
