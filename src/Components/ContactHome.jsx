@@ -229,7 +229,7 @@ const ContactHome = () => {
               Phone
             </h2>
             <p className="mt-2 text-blue-950 text-sm sm:text-base">
-              Mon-Fri from 8am to 5pm.
+              Mon-Sat from 9am to 9pm.
             </p>
             <p className="mt-1 text-blue-950/50 text-sm sm:text-base">
               +91 9076115232 | +91 9820115232
