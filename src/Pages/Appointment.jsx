@@ -398,7 +398,7 @@ const Appointment = () => {
           setAlertMessage("");
           setAlertType("");
           navigate(`/billing/${appointmentId}`, {
-            state: { validAccess: true },
+            state: { validAccess: true, PKGprice: pkgprice },
           });
         }, 2000);
       } else {

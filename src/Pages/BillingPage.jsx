@@ -186,6 +186,7 @@ const BillingPage = () => {
   const [bill, setBill] = useState(null);
   const [loading, setLoading] = useState(true);
   const billRef = useRef();
+  const [pkgprice, setpkgprice] = useState(location.state?.PKGprice || null);
 
   useEffect(() => {
     if (!location.state || !location.state.validAccess) {
@@ -304,7 +305,9 @@ const BillingPage = () => {
           <div className="text-sm sm:text-base md:text-lg">
             <div className="flex justify-between items-center mt-4">
               <h3 className="font-semibold text-blue-950">Total Amount:</h3>
-              <p className="font-bold text-gray-800">₹{bill.total_price}</p>
+              <p className="font-bold text-gray-800">
+                ₹{pkgprice ?? bill.total_price}
+              </p>
             </div>
             <div className="flex justify-between items-center mt-2">
               <h3 className="font-semibold text-blue-950">Offer Amount:</h3>
