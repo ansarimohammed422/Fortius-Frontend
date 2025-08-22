@@ -318,6 +318,8 @@ const SearchBar = (props) => {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5">
             {values.selectedTest.map((test, index) => {
               total_price += test.discounted_price ?? test.price;
+              offerPrice =
+                (test.membership_price + test.general_offer_price) / 2;
               return (
                 <div
                   key={test.id}
@@ -352,10 +354,6 @@ const SearchBar = (props) => {
                   <span className="text-blue-950 font-bold">Offer Price:</span>{" "}
                   <span className="font-bold drop-shadow-2xl">
                     Rs.
-                    {
-                      (offerPrice =
-                        (test.membership_price + test.general_offer_price) / 2)
-                    }
                     {offerPrice && offerPrice !== total_price
                       ? offerPrice
                       : null}
