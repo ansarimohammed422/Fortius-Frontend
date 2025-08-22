@@ -347,13 +347,21 @@ const SearchBar = (props) => {
                   Rs.{props.offerPrice ?? total_price}
                 </span>
               </div>
-              <div>
-                <span className="text-blue-950 font-bold">Offer Price:</span>{" "}
-                <span className="font-bold drop-shadow-2xl">
-                  Rs.
-                  {offerPrice && offerPrice !== total_price ? offerPrice : null}
-                </span>
-              </div>
+              {offerPrice && (
+                <div>
+                  <span className="text-blue-950 font-bold">Offer Price:</span>{" "}
+                  <span className="font-bold drop-shadow-2xl">
+                    Rs.
+                    {
+                      (offerPrice =
+                        (test.membership_price + test.general_offer_price) / 2)
+                    }
+                    {offerPrice && offerPrice !== total_price
+                      ? offerPrice
+                      : null}
+                  </span>
+                </div>
+              )}
             </h1>
           </div>
         </div>
