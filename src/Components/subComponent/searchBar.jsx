@@ -205,7 +205,7 @@ const SearchBar = (props) => {
       setShowAll(true);
     } else {
       const filtered = dataset.filter((test) =>
-        test.name.toLowerCase().includes(value.toLowerCase()),
+        test.name.toLowerCase().includes(value.toLowerCase())
       );
       setSuggestions(filtered);
       setShowAll(false);
@@ -318,8 +318,7 @@ const SearchBar = (props) => {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5">
             {values.selectedTest.map((test, index) => {
               total_price += test.discounted_price ?? test.price;
-              offerPrice =
-                (test.membership_price + test.general_offer_price) / 2;
+              console.log(values.selectedTest);
               return (
                 <div
                   key={test.id}
