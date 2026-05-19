@@ -202,8 +202,8 @@ const ContactHome = () => {
               Come say hello at our office HQ.
             </p>
             <p className="mt-1 text-blue-950/50 text-sm sm:text-base">
-              223/234, Kedy Shopping Arcade, Shop no: G/1-30-31, Bellasis Road,
-              Nagpada, Mumbai - 400008
+              Shop No. 5, Haji Kasam Chawl, Next to Tahoora Sweets, Bellasis
+              Road, Nagpada, Mumbai-400008.
             </p>
           </div>
 

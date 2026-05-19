@@ -391,8 +391,8 @@ const Contact = () => {
                     d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
                   />
                 </svg>
-                223/234, Kedy Shopping Arcade, Shop no: G/1-30-31, Bellasis
-                Road, Nagpada, Mumbai - 400008
+                Shop No. 5, Haji Kasam Chawl, Next to Tahoora Sweets, Bellasis
+                Road, Nagpada, Mumbai-400008.
               </p>
 
               <p className="flex items-start">
